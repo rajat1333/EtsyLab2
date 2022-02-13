@@ -1,0 +1,49 @@
+<html lang="en">
+    <!-- comments -->
+    <head>
+        <!--linking css always done in head section-->
+        <!--can be linked in three ways-->
+        <link rel="stylesheet" type="text/css" href="mycss.css">
+        <!--used for internal css. Internal css has priority over external css-->
+        <style>     /* css comments*/
+            body{
+                background-color: aqua;
+                border: 0ch;
+            }
+            h3{
+                background-color: blue;
+            }
+            p{
+                background-color: aliceblue;
+            }
+        </style>
+        <meta charset="UTF8">
+        <title>Sample form</title>
+        <meta name="description" content="Sample form">
+        <meta name="keywords" content="Sample form">  <!--Keywords need to be aligned with web pages for search criteria-->
+    </head>
+
+    <body>
+        <h3 style="background-color: aliceblue; color: red;">Sample HTML form</h3>  <!--inline css as priority over internal css-->
+        <form name="form1" action="promise.js" method="post">
+            Name<br>
+            <input type="text" name="name"><br>
+            Last Name<br>
+            <input type="text" name="lastName"><br>
+            <br>
+            <button type="submit" value="Submit data">Submit</button>
+        </form>
+        <hr>
+       
+        <h3 id="levTest">Sharin youtube <video src=""></video></h3>
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/PSKr9VLTBD8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <hr>
+        <!--classes in css used for gruop of objects-->
+        <p class="g1">group 1</p>
+        <p class="g1">group 1</p>
+        <p class="g2">group 2</p>
+        <p class="g2">group 2</p>
+
+    </body>
+
+</html>
