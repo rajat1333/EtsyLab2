@@ -111,26 +111,28 @@ class Login extends Component{
             <div>
                 {redirectVar}
             <div class="container">
-                
+                <center>
                 <div class="login-form">
                     <div class="main-div">
                         <div class="panel">
-                            <h2>Admin Login</h2>
+                            <h2>Welcome to Etsy Website</h2>
                             <p>Please enter your username and password</p>
                         </div>
                         
-                            <div class="form-group">
+                            <div class="formStyle">
                                 <input onChange = {this.usernameChangeHandler} type="text" class="form-control" name="username" placeholder="Username"/>
                             </div>
-                            <div class="form-group">
+                            <div class="formStyle">
                                 <input onChange = {this.passwordChangeHandler} type="password" class="form-control" name="password" placeholder="Password"/>
                             </div>
                             <button onClick = {this.submitLogin} class="btn btn-primary">Login</button>        
-                            <div class="form-group">
+                            <div class="formStyle">
                                {this.state.message}
                             </div>         
                     </div>
                 </div>
+                </center>
+                
             </div>
             </div>
         )
