@@ -2,16 +2,17 @@ var express = require('express');
 var router = express.Router();
 var mysql = require('mysql');
 var app = express();
+var constants = require("../config/config.json")
 
-var con = mysql.createConnection({
-  host: "etsy.cdj42dsuxllh.us-east-2.rds.amazonaws.com",
-  user: "admin",
-  password: "admin1234",
-  port : 3306,
-  database : "etsy"
+var connPool = mysql.createPool({
+  host: constants.DB.host,
+  user: constants.DB.user,
+  password: constants.DB.password,
+  port : constants.DB.port,
+  database : constants.DB.database
 });
 
-con.connect(function(err) {
+connPool.getConnection(function(err) {
   if (err) throw err;
   console.log("Connected to mysql database!");
 });
