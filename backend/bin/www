@@ -8,6 +8,23 @@ var app = require('../app');
 var debug = require('debug')('backend:server');
 var http = require('http');
 
+var mysql = require('mysql');
+var constants = require("../config/config.json")
+
+var connPool = mysql.createPool({
+  host: constants.DB.host,
+  user: constants.DB.user,
+  password: constants.DB.password,
+  port : constants.DB.port,
+  database : constants.DB.database
+});
+
+connPool.getConnection(function(err) {
+  if (err) throw err;
+  console.log("Connected to mysql database!");
+});
+module.exports = connPool;
+
 /**
  * Get port from environment and store in Express.
  */
@@ -26,6 +43,7 @@ var server = http.createServer(app);
  */
 
 server.listen(port);
+console.log("Server Listening on port : " + port);
 server.on('error', onError);
 server.on('listening', onListening);
 
