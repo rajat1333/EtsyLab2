@@ -11,3 +11,22 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+.custom-button{
+  padding: 15px;
+
+  background-color: antiquewhite;
+    color: blueviolet;
+    border: solid 2px black;
+    cursor: pointer;
+    border-radius: 20px;
+}
+
+.hand-icon{
+  cursor: pointer;
+}
+.formStyle{
+  padding: 15px 10px;
+  width: 50%;
+  align-items: center;
+  justify-items: center;
+}
