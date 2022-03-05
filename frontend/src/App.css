@@ -39,30 +39,35 @@
 *{
   box-sizing: border-box;
 }
-html,body{
+/* html,body{
   margin: 0;
   padding: 0;
 }
 .title{
   color: red;
   align-content:center;
-}
-.container{
+} */
+/* .container{
   
   background-color :aliceblue;
   margin: 10px, 50px;
-}
+} */
 .formStyle{
   padding: 15px 10px;
   align-items: center;
   justify-items: center;
 }
-input{
+body{margin-top:20px;}
+.avatar{
+width:200px;
+height:200px;
+}			
+/* input{
   width: 50%;
   border: solid 1px gray;
   padding: 15px 10px;
-}
-button{
+} */
+/* button{
   width: 200px;
   padding: 15px;
   background-color: antiquewhite;
@@ -74,16 +79,15 @@ button{
 button:hover{
   background-color: blueviolet;
   color: antiquewhite;
-}
-.bg {
-  /* The image used */
-  /*background-image: url("./login.jpg");*/
+} */
+/* .bg {
 
-  /* Full height */
   height: 100%; 
 
-  /* Center and scale the image nicely */
+
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-}
+} */
+
+
