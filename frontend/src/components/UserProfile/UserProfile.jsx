@@ -1,17 +1,19 @@
 import React, { Component } from "react";
 import { Container } from "react-bootstrap";
 import cookie from "react-cookies";
-import { Redirect } from "react-router";
+import {  Navigate } from "react-router-dom";
+import EtsyNavigationBar from "../LandingPage/EtsyNavigationBar";
 
 export default class UserProfile extends Component {
   render() {
     let redirectVar = null;
     if (!cookie.load("cookie")) {
-      redirectVar = <Redirect to="/login" />;
+      redirectVar = <Navigate to="/login" />;
     }
     return (
       <Container>
         {redirectVar}
+        <EtsyNavigationBar />
         <div class="container bootstrap snippets bootdey">
           <h1 class="text-primary">Edit Profile</h1>
           <hr />

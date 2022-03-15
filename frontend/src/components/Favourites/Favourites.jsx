@@ -2,9 +2,11 @@ import React, { Component } from "react";
 import "../../App.css";
 import axios from "axios";
 import cookie from "react-cookies";
-import { Redirect } from "react-router";
+import {  Navigate } from "react-router-dom";
 import { Container, Row, Col } from "react-bootstrap";
 import Product from "../Home/Product";
+import EtsyNavigationBar from "../LandingPage/EtsyNavigationBar";
+import Footer from "../Footer/Footer";
 
 class Favourites extends Component {
   constructor() {
@@ -31,11 +33,12 @@ class Favourites extends Component {
   render() {
     let redirectVar = null;
     if (!cookie.load("cookie")) {
-      redirectVar = <Redirect to="/login" />;
+      redirectVar = <Navigate to="/login" />;
     }
     return (
       <div>
         {redirectVar}
+        <EtsyNavigationBar />
         <Container>
           <h2>Etsy Favourites Page</h2>
           <form className="d-flex">
@@ -67,6 +70,7 @@ class Favourites extends Component {
             })}
           </Row>
         </Container>
+        <Footer />
       </div>
     );
   }

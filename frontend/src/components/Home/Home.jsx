@@ -2,9 +2,11 @@ import React, { Component } from "react";
 import "../../App.css";
 import axios from "axios";
 import cookie from "react-cookies";
-import { Redirect } from "react-router";
+import {  Navigate } from "react-router-dom";
 import { Container, Row, Col } from "react-bootstrap";
 import Product from "./Product";
+import EtsyNavigationBar from "../LandingPage/EtsyNavigationBar";
+import Footer from "../Footer/Footer";
 
 class Home extends Component {
   constructor() {
@@ -31,11 +33,12 @@ class Home extends Component {
 
     let redirectVar = null;
     if (!cookie.load("cookie")) {
-      redirectVar = <Redirect to="/login" />;
+      redirectVar = <Navigate to="/login" />;
     }
     return (
       <div>
         {redirectVar}
+        <EtsyNavigationBar />
         <Container>
         <h2>Etsy Home Page</h2>
           <Row>
@@ -47,6 +50,7 @@ class Home extends Component {
             <Col md={3}>This is column three</Col> */}
           </Row>
         </Container>
+        <Footer />
       </div>
     );
   }

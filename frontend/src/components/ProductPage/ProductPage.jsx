@@ -1,13 +1,14 @@
 import React, { Component } from "react";
 import { Container } from "react-bootstrap";
 import cookie from "react-cookies";
-import { Redirect } from "react-router";
+import {  Navigate } from "react-router-dom";
+
 
 export default class ProductPage extends Component {
   render() {
     let redirectVar = null;
     if (!cookie.load("cookie")) {
-      redirectVar = <Redirect to="/login" />;
+      redirectVar = <Navigate to="/login" />;
     }
     return (
       <Container>

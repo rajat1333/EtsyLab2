@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Route } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Home from "./Home/Home";
 import EtsyNavigationBar from "./LandingPage/EtsyNavigationBar";
 import Login from "./Login/Login";
@@ -18,17 +18,17 @@ class Main extends Component {
     return (
       <div>
         {/*Render Different Component based on Route*/}
-        <Route path="/" component={EtsyNavigationBar} />
-        <Route path="/login" component={Login} />
-        <Route path="/home" component={Home} />
-        <Route path="/search" component={SearchPage} />
-        <Route path="/favourites" component={Favourites} />
-        <Route path="/userProfile" component={UserProfile} />
-        <Route path="/productPage" component={ProductPage} />
-        <Route path="/shopUserAvailablity" component={ShopUserAvailablity} />
-        <Route path="/shopHomePage" component={ShopHomePage} />
-        <Route path="/signUp" component={SignUp} />
-        <Route path="/" component={Footer} />
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/search" element={<SearchPage />} />
+          <Route path="/favourites" element={<Favourites />} />
+          <Route path="/userProfile" element={<UserProfile />} />
+          <Route path="/productPage" element={<ProductPage />} />
+          <Route path="/shopUserAvailablity" element={<ShopUserAvailablity />} />
+          <Route path="/shopHomePage/:shopName" element={<ShopHomePage />} />
+          <Route path="/signUp" element={<SignUp />} />
+        </Routes>
       </div>
     );
   }

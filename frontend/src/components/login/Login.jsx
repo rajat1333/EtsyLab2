@@ -2,7 +2,7 @@ import React from 'react';
 import '../../App.css';
 import axios from 'axios';
 import cookie from 'react-cookies';
-import {Redirect} from 'react-router';
+import {  Navigate } from "react-router-dom";
 import * as constants from '../../config/constants'
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -116,7 +116,7 @@ class Login extends React.Component{
         //redirect based on successful login
         let redirectVar = null;
         if(cookie.load('cookie')){
-            redirectVar = <Redirect to= "/home"/>
+            redirectVar = <Navigate to= "/home"/>
         }
         return(
             <div>

@@ -2,9 +2,11 @@ import React, { Component } from "react";
 import "../../App.css";
 import axios from "axios";
 import cookie from "react-cookies";
-import { Redirect } from "react-router";
+import {  Navigate } from "react-router-dom";
 import { Container, Row, Col } from "react-bootstrap";
 import Product from "./Product";
+import Footer from "../Footer/Footer";
+import EtsyNavigationBar from "../LandingPage/EtsyNavigationBar";
 
 class SearchPage extends Component {
   constructor() {
@@ -31,11 +33,12 @@ class SearchPage extends Component {
 
     let redirectVar = null;
     if (!cookie.load("cookie")) {
-      redirectVar = <Redirect to="/login" />;
+      redirectVar = <Navigate to="/login" />;
     }
     return (
       <div>
         {redirectVar}
+        <EtsyNavigationBar />
         <Container>
         <h2>Etsy Search Page</h2>
           <Row>
@@ -44,6 +47,7 @@ class SearchPage extends Component {
             })}
           </Row>
         </Container>
+        <Footer />
       </div>
     );
   }

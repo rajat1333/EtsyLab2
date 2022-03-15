@@ -1,25 +1,28 @@
 import React, { useState, useEffect } from "react";
 import { Container } from "react-bootstrap";
 import cookie from "react-cookies";
-import { Redirect } from "react-router";
+import { Navigate, useParams } from "react-router-dom";
 import AddItem from "./AddItem";
 import { storage_bucket } from "../../config/firebaseConfig";
-import {ref, uploadBytes, getDownloadURL} from 'firebase/storage'
-import axios from 'axios';
-import * as constants from '../../config/constants'
-
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import axios from "axios";
+import * as constants from "../../config/constants";
+import EtsyNavigationBar from "../LandingPage/EtsyNavigationBar";
+import Footer from "../Footer/Footer";
 
 function ShopHomePage() {
   const [openModal, setOpenModal] = useState(false);
   const [image, setImage] = useState(null);
+  let { shopName } = useParams();
+  console.log("shop name is : " + shopName);
 
   const handleImageChange = (e) => {
     if (e.target.files[0]) {
       setImage(e.target.files[0]);
     }
   };
-  const handleUpload = (e) =>{
-    if (image != null ) {
+  const handleUpload = (e) => {
+    if (image != null) {
       console.log(image);
       const storageRef = ref(storage_bucket, image.name);
       // 'file' comes from the Blob or File API
@@ -30,36 +33,40 @@ function ShopHomePage() {
         .then((downloadURL) => {
           console.log("Download URL", downloadURL);
           const data = {
-            downloadURL : downloadURL
-          }
+            downloadURL: downloadURL,
+          };
           axios.defaults.withCredentials = true;
-            //make a post request with the user data
-            axios.post('http://localhost:3001/updateShop',data)
-                .then(response => {
-                    console.log("Status Code : ",response.status);
-                    if(response.status === 200 && response.data === constants.USER_NAME_AVAILABLE ){
-                        console.log("hello user");
-                        this.props.login()
-                        this.setState({
-                            authFlag : true
-                        })
-                    }
-                    if(response.status === 200 && response.data === constants.USER_NAME_UNAVAILABLE){
-                        alert("Please enter valid username and password!");
-                        this.setState({
-                            authFlag : false,
-                            message : "Login failed. Please retry with valid credentials"
-                        })
-                        //window.open('/login','_self');
-                    
-                        
-                    }
+          //make a post request with the user data
+          axios
+            .post("http://localhost:3001/updateShop", data)
+            .then((response) => {
+              console.log("Status Code : ", response.status);
+              if (
+                response.status === 200 &&
+                response.data === constants.USER_NAME_AVAILABLE
+              ) {
+                console.log("hello user");
+                this.props.login();
+                this.setState({
+                  authFlag: true,
                 });
+              }
+              if (
+                response.status === 200 &&
+                response.data === constants.USER_NAME_UNAVAILABLE
+              ) {
+                alert("Please enter valid username and password!");
+                this.setState({
+                  authFlag: false,
+                  message: "Login failed. Please retry with valid credentials",
+                });
+                //window.open('/login','_self');
+              }
+            });
 
           setImage(downloadURL);
         });
     }
-
 
     // const uploadTask = storage_bucket.ref(`images/${image.name}`).put(image)
     // uploadTask.on(
@@ -68,25 +75,26 @@ function ShopHomePage() {
     //   error =>{ console.log(error)},
     //   ()=>{
     //     storage_bucket.ref("images").child(image.name).getDownloadURL().then( url => console.log(url))
-    //   } 
+    //   }
     // )
-  }
-  
-  if(image!=null){
+  };
+
+  if (image != null) {
     console.log("image is : " + JSON.stringify(image));
     console.log("image name is : " + image.name);
   }
-  
+
   let redirectVar = null;
   if (!cookie.load("cookie")) {
-    redirectVar = <Redirect to="/login" />;
+    redirectVar = <Navigate to="/login" />;
   }
 
   return (
     <Container>
       {redirectVar}
+      <EtsyNavigationBar />
       <div class="container bootstrap snippets bootdey">
-        <h1 class="text-primary">Welcome to ShopName</h1>
+        <h1 class="text-primary">Welcome to : {shopName}</h1>
         <hr />
         <div class="row">
           <div class="col-md-3">
@@ -103,7 +111,11 @@ function ShopHomePage() {
                 onChange={handleImageChange}
               />
               <br />
-              <button class="btn btn-primary" type="button" onClick={handleUpload}>
+              <button
+                class="btn btn-primary"
+                type="button"
+                onClick={handleUpload}
+              >
                 Upload Image
               </button>
             </div>
@@ -156,6 +168,7 @@ function ShopHomePage() {
           </div>
         </div>
       </div>
+      <Footer />
     </Container>
   );
 }
