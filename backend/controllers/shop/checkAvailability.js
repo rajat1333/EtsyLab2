@@ -1,4 +1,4 @@
-const connPool = require('../db/mysql');
+const connPool = require('../../db/mysql');
 var mysql = require('mysql');
 var session = require('express-session');
 var constants = require("../../config/constants.json")

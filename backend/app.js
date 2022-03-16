@@ -13,7 +13,7 @@ var signUpRouter = require('./routes/signUp');
 var homeRouter = require('./routes/home');
 var shopRouter = require('./routes/shop');
 var usersRouter = require('./routes/users');
-h
+
 var app = express();
 
 //use cors to allow cross origin resource sharing
