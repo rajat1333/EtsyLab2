@@ -12,9 +12,38 @@ import Footer from "../Footer/Footer";
 
 function ShopHomePage() {
   const [openModal, setOpenModal] = useState(false);
-  const [image, setImage] = useState(null);
+  const [shop, setShop] = useState(null);
+  const [image, setImage] = useState("./shop.jpg");
   let { shopName } = useParams();
   console.log("shop name is : " + shopName);
+  console.log("shop object is : " + JSON.stringify(shop));
+  
+
+  useEffect(() => {
+    const userData = {
+      name: shopName,
+    };
+    if (shopName != null) {
+      axios.defaults.withCredentials = true;
+      axios
+        .post("http://localhost:3001/shop/shopExists", userData)
+        .then((response) => {
+          console.log("Status Code : ", response.status);
+          let shopDetails = response.data;
+          console.log("shopDetails are : " + JSON.stringify(shopDetails));
+
+          if (shopDetails != null && shopDetails.length != 0) {
+            let shopObject = shopDetails[0];
+            console.log("shop is  are : " + JSON.stringify(shopObject));
+            setShop(shopObject);
+            let shop_image = shopDetails[0].shop_image;
+            setImage(shop_image);
+            if(shop!=null)
+              setImage(shop_image);
+          }
+        });
+    }
+  }, []);
 
   const handleImageChange = (e) => {
     if (e.target.files[0]) {
@@ -32,51 +61,19 @@ function ShopHomePage() {
         })
         .then((downloadURL) => {
           console.log("Download URL", downloadURL);
-          const data = {
-            downloadURL: downloadURL,
+          const updateData = {
+            shopName : shopName,
+            imageSrc: downloadURL
           };
           axios.defaults.withCredentials = true;
-          //make a post request with the user data
-          axios
-            .post("http://localhost:3001/updateShop", data)
-            .then((response) => {
-              console.log("Status Code : ", response.status);
-              if (
-                response.status === 200 &&
-                response.data === constants.USER_NAME_AVAILABLE
-              ) {
-                console.log("hello user");
-                this.props.login();
-                this.setState({
-                  authFlag: true,
-                });
-              }
-              if (
-                response.status === 200 &&
-                response.data === constants.USER_NAME_UNAVAILABLE
-              ) {
-                alert("Please enter valid username and password!");
-                this.setState({
-                  authFlag: false,
-                  message: "Login failed. Please retry with valid credentials",
-                });
-                //window.open('/login','_self');
-              }
-            });
-
+          axios.post("http://localhost:3001/shop/updateShop", updateData)
+          .then((response) => {
+            console.log("Status Code : ", response.status);
+          });
+          
           setImage(downloadURL);
         });
     }
-
-    // const uploadTask = storage_bucket.ref(`images/${image.name}`).put(image)
-    // uploadTask.on(
-    //   "state_changed,",
-    //   snapshot=>{},
-    //   error =>{ console.log(error)},
-    //   ()=>{
-    //     storage_bucket.ref("images").child(image.name).getDownloadURL().then( url => console.log(url))
-    //   }
-    // )
   };
 
   if (image != null) {
@@ -100,7 +97,7 @@ function ShopHomePage() {
           <div class="col-md-3">
             <div class="text-center">
               <img
-                src="./shop.jpg"
+                src={image}
                 class="avatar img-circle img-thumbnail"
                 alt="avatar"
               />
@@ -127,7 +124,7 @@ function ShopHomePage() {
             <form class="form-horizontal" role="form">
               <div class="form-group">
                 <label class="col-lg-3 control-label">
-                  Shop Owner name: xxxdddd
+                  Shop email_id : 
                 </label>
                 <div class="col-lg-8">
                   <input
@@ -136,12 +133,6 @@ function ShopHomePage() {
                     value="dey-dey"
                     readonly
                   />
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-lg-3 control-label">Last name:</label>
-                <div class="col-lg-8">
-                  <input class="form-control" type="text" value="bootdey" />
                 </div>
               </div>
 

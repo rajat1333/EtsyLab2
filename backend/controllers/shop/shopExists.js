@@ -6,9 +6,10 @@ var constants = require("../../config/constants.json");
 const shopExists = (req, res) => {
 
   let emailId = req.body.emailId;
+  let name = req.body.name;
 
   var sqlShopExists =
-    "SELECT * FROM shops WHERE email_id = " + mysql.escape(emailId);
+    "SELECT * FROM shops WHERE email_id = " + mysql.escape(emailId) + " OR name = " + mysql.escape(name);
   console.log("Sql querry is : ", sqlShopExists);
   connPool.query(sqlShopExists, function (err, result) {
     console.log("querry executed ");

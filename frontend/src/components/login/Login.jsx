@@ -103,7 +103,7 @@ class Login extends React.Component{
                             authFlag : false,
                             message : "Login failed. Please retry with valid credentials"
                         })
-                        //window.open('/login','_self');
+                        window.open('/login','_self');
                     
                         
                     }
