@@ -27,7 +27,7 @@ const login = (req, res) =>{
             })
             res.end(constants.INVALID_CREDENTIALS);
         }else{
-            res.cookie('cookie',"admin",{maxAge: 900000, httpOnly: false, path : '/'});
+            res.cookie('cookie', user.emailId ,{maxAge: 900000, httpOnly: false, path : '/'});
             req.session.user = user;
             res.writeHead(200,{
                 'Content-Type' : 'text/plain'
