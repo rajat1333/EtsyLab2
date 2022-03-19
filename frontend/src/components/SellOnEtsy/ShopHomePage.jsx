@@ -1,23 +1,24 @@
 import React, { useState, useEffect } from "react";
-import { Container } from "react-bootstrap";
 import cookie from "react-cookies";
 import { Navigate, useParams } from "react-router-dom";
 import AddItem from "./AddItem";
 import { storage_bucket } from "../../config/firebaseConfig";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import axios from "axios";
-import * as constants from "../../config/constants";
 import EtsyNavigationBar from "../LandingPage/EtsyNavigationBar";
 import Footer from "../Footer/Footer";
+import { Container, Row, Col } from "react-bootstrap";
+import ShopProduct from "./ShopProduct";
 
 function ShopHomePage() {
   const [openModal, setOpenModal] = useState(false);
   const [shop, setShop] = useState(null);
   const [image, setImage] = useState("./shop.jpg");
+  const [shopProducts, setshopProducts] = useState(null);
   let { shopName } = useParams();
   console.log("shop name is : " + shopName);
   console.log("shop object is : " + JSON.stringify(shop));
-  
+  console.log("products : " + JSON.stringify(shopProducts));
 
   useEffect(() => {
     const userData = {
@@ -38,11 +39,20 @@ function ShopHomePage() {
             setShop(shopObject);
             let shop_image = shopDetails[0].shop_image;
             setImage(shop_image);
-            if(shop!=null)
-              setImage(shop_image);
+            if (shop != null) setImage(shop_image);
           }
         });
     }
+
+    //code to load all the shop items
+
+    axios.post("http://localhost:3001/shop/shopProducts", userData).then((response) => {
+      //update the state with the response data
+      console.log(
+        "Getting data from backend : " + JSON.stringify(response.data)
+      );
+      setshopProducts(response.data);
+    });
   }, []);
 
   const handleImageChange = (e) => {
@@ -62,15 +72,16 @@ function ShopHomePage() {
         .then((downloadURL) => {
           console.log("Download URL", downloadURL);
           const updateData = {
-            shopName : shopName,
-            imageSrc: downloadURL
+            shopName: shopName,
+            imageSrc: downloadURL,
           };
           axios.defaults.withCredentials = true;
-          axios.post("http://localhost:3001/shop/updateShop", updateData)
-          .then((response) => {
-            console.log("Status Code : ", response.status);
-          });
-          
+          axios
+            .post("http://localhost:3001/shop/updateShop", updateData)
+            .then((response) => {
+              console.log("Status Code : ", response.status);
+            });
+
           setImage(downloadURL);
         });
     }
@@ -85,31 +96,51 @@ function ShopHomePage() {
   if (!cookie.load("cookie")) {
     redirectVar = <Navigate to="/login" />;
   }
+  let shopProductVar = null;
+  if(shopProducts!=null){
+    shopProductVar = (
+      <Row>
+              {shopProducts.map((prod) => {
+                return (
+                  <Col md={3}>
+                    <ShopProduct
+                      key={prod.id}
+                      id={prod.id}
+                      name={prod.name}
+                      price={prod.price}
+                      product={prod}
+                    />
+                  </Col>
+                );
+              })}
+            </Row>
+    )
+  }
 
   return (
     <Container>
       {redirectVar}
       <EtsyNavigationBar />
-      <div class="container bootstrap snippets bootdey">
-        <h1 class="text-primary">Welcome to : {shopName}</h1>
+      <div className="container bootstrap snippets bootdey">
+        <h1 className="text-primary">Welcome to : {shopName}</h1>
         <hr />
-        <div class="row">
-          <div class="col-md-3">
-            <div class="text-center">
+        <div className="row">
+          <div className="col-md-3">
+            <div className="text-center">
               <img
                 src={image}
-                class="avatar img-circle img-thumbnail"
+                className="avatar img-circle img-thumbnail"
                 alt="avatar"
               />
               <h6>Upload a different Shop photo...</h6>
               <input
                 type="file"
-                class="form-control"
+                className="form-control"
                 onChange={handleImageChange}
               />
               <br />
               <button
-                class="btn btn-primary"
+                className="btn btn-primary"
                 type="button"
                 onClick={handleUpload}
               >
@@ -118,32 +149,32 @@ function ShopHomePage() {
             </div>
           </div>
 
-          <div class="col-md-9 personal-info">
+          <div className="col-md-9 personal-info">
             <h3>Shop Details</h3>
 
-            <form class="form-horizontal" role="form">
-              <div class="form-group">
-                <label class="col-lg-3 control-label">
-                  Shop email_id : 
+            <form className="form-horizontal" role="form">
+              <div className="form-group">
+                <label className="col-lg-3 control-label">
+                  Shop email_id :
                 </label>
-                <div class="col-lg-8">
+                <div className="col-lg-8">
                   <input
-                    class="form-control"
+                    className="form-control"
                     type="text"
                     value="dey-dey"
-                    readonly
+                    readOnly
                   />
                 </div>
               </div>
 
               <br />
-              <button class="btn btn-primary" type="button">
+              <button className="btn btn-primary" type="button">
                 Edit Shop
               </button>
             </form>
             <br />
             <button
-              class="btn btn-primary"
+              className="btn btn-primary"
               type="button"
               onClick={() => {
                 setOpenModal(true);
@@ -154,6 +185,7 @@ function ShopHomePage() {
             {openModal && <AddItem closeModal={setOpenModal} />}
             {/* <AddItem /> */}
             <br />
+            {shopProductVar}
             <br />
             <br />
           </div>
