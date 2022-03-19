@@ -5,7 +5,6 @@ import cookie from 'react-cookies';
 import {  Navigate } from "react-router-dom";
 import * as constants from '../../config/constants'
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { login } from '../../js/actions/loginActionCreator';
 
 //Define a Login Component

@@ -182,7 +182,7 @@ function ShopHomePage() {
             >
               Add Item
             </button>
-            {openModal && <AddItem closeModal={setOpenModal} />}
+            {openModal && <AddItem closeModal={setOpenModal} name ={shopName} />}
             {/* <AddItem /> */}
             <br />
             {shopProductVar}

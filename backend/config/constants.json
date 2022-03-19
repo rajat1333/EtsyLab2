@@ -4,5 +4,6 @@
     "USER_CREATED" : "User Created",
     "USER_ALREADY_EXISTS" : "User Already Exists",
     "USER_NAME_AVAILABLE" : "UserName Available",
-    "USER_NAME_UNAVAILABLE" : "UserName Unavailable"
+    "USER_NAME_UNAVAILABLE" : "UserName Unavailable",
+    "ITEM_ADDED_SUCCESSFULLY" : "Item added Successfully"
 }

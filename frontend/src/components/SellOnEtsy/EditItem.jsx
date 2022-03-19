@@ -3,16 +3,16 @@ import { Modal, Button, Dropdown } from "react-bootstrap";
 import axios from "axios";
 import { storage_bucket } from "../../config/firebaseConfig";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import * as constants from "../../config/constants";
+import * as constants from '../../config/constants'
 
-function AddItem(props) {
+function EditItem(props) {
   // const [newItem, setNewItem] = useState({});
-  const [image, setImage] = useState();
-  const [name, setName] = useState();
-  const [description, setDescriptoin] = useState();
-  const [price, setPrice] = useState();
-  const [category, setCategory] = useState();
-  const [quantity, setQantity] = useState();
+  const [image, setImage] = useState(props.product.image);
+  const [name, setName] = useState(props.product.name);
+  const [description, setDescriptoin] = useState(props.product.description);
+  const [price, setPrice] = useState(props.product.price);
+  const [category, setCategory] = useState(props.product.category);
+  const [quantity, setQantity] = useState(props.product.quantity);
   // const [shopName, setShopName] = useState();
   console.log("shop name from parent component is : " + props.name);
 
@@ -58,7 +58,7 @@ function AddItem(props) {
         })
         .then((downloadURL) => {
           console.log("Download URL", downloadURL);
-          setImage(downloadURL);
+          setImage(downloadURL)
           const newItem = {
             name: name,
             description: description,
@@ -74,10 +74,7 @@ function AddItem(props) {
             .post("http://localhost:3001/shop/addItem", newItem)
             .then((response) => {
               console.log("Status Code : ", response.status);
-              if (
-                response.status === 200 &&
-                response.data === constants.ITEM_ADDED_SUCCESSFULLY
-              ) {
+              if(response.status === 200 && response.data === constants.ITEM_ADDED_SUCCESSFULLY ){
                 alert("Item added succussesfully.");
                 props.closeModal(false);
               }
@@ -103,7 +100,7 @@ function AddItem(props) {
           <Modal.Title id="contained-modal-title-vcenter">Add Item</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <h4>Please enter the details for New Item</h4>
+          <h4>Please enter Edit the details</h4>
           <h6>Upload Item Photo</h6>
           <input
             type="file"
@@ -119,7 +116,7 @@ function AddItem(props) {
                 <input
                   className="form-control"
                   type="text"
-                  placeholder="name"
+                  value={name}
                   onChange={handleNameChange}
                 />
               </div>
@@ -130,7 +127,7 @@ function AddItem(props) {
                 <input
                   className="form-control"
                   type="text"
-                  placeholder="Description"
+                  value={description}
                   onChange={handleDescriptionChange}
                 />
               </div>
@@ -141,7 +138,7 @@ function AddItem(props) {
                 <input
                   className="form-control"
                   type="text"
-                  placeholder="Price"
+                  value={price}
                   onChange={handlePriceChange}
                 />
               </div>
@@ -154,7 +151,7 @@ function AddItem(props) {
                 <input
                   className="form-control"
                   type="text"
-                  placeholder="Quantity"
+                  value={quantity}
                   onChange={handleQuantityChange}
                 />
               </div>
@@ -185,7 +182,7 @@ function AddItem(props) {
               type="button"
               onClick={handleSubmit}
             >
-              Add Item
+              Save changes
             </button>
           </form>
         </Modal.Body>
@@ -203,4 +200,4 @@ function AddItem(props) {
   );
 }
 
-export default AddItem;
+export default EditItem;
