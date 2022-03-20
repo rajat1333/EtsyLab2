@@ -7,6 +7,7 @@ import { useNavigate, Navigate } from "react-router-dom";
 import EtsyNavigationBar from "../LandingPage/EtsyNavigationBar";
 
 function ShopUserAvailablity() {
+  const navigate = useNavigate();
   const [shopName, setShopName] = useState("");
   let NavigateVar = null;
   let userEmailId = cookie.load("cookie");
@@ -38,7 +39,7 @@ function ShopUserAvailablity() {
     
   },[]);
 
-  const navigate = useNavigate();
+  
   const handleShopNameChange = (e) =>{
     setShopName(e.target.value);
   }

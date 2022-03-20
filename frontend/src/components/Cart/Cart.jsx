@@ -10,13 +10,13 @@ import {
 } from "react-bootstrap";
 import cookie from "react-cookies";
 import axios from "axios";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import EtsyNavigationBar from "../LandingPage/EtsyNavigationBar";
 import Footer from "../Footer/Footer";
 import * as constants from "../../config/constants";
 
-
 function Cart() {
+  const navigate = useNavigate();
   let currentUser = cookie.load("cookie");
   const [cartItems, setCartItems] = useState();
   const [orderPrice, setOrderPrice] = useState(0);
@@ -47,7 +47,6 @@ function Cart() {
           setOrderPrice(parseFloat(tempOrderPrice).toFixed(2));
         }
       });
-    
   }, []);
   let redirectVar = null;
   if (!cookie.load("cookie")) {
@@ -60,29 +59,32 @@ function Cart() {
     });
     return tempOrderPrice;
   };
-  const handlePlaceOrder = ()=>{
+  const handlePlaceOrder = () => {
     cartItems.map((item) => {
-        const cartItem = {
-            email_id: currentUser,
-            quantity: item.quantity,
-            product_id: item.product_id,
-            name: item.name,
-            price: item.price,
-          };
-          axios.defaults.withCredentials = true;
-              axios
-                .post("http://localhost:3001/purchase/makePurchase", cartItem)
-                .then((response) => {
-                  console.log("Status Code : ", response.status);
-                  if (
-                    response.status === 200 &&
-                    response.data === constants.ITEM_ADDED_SUCCESSFULLY
-                  ) {
-                    alert("Item added succussesfully.");
-                  }
-                });
-      });
-  }
+      const cartItem = {
+        email_id: currentUser,
+        quantity: item.quantity,
+        product_id: item.product_id,
+        name: item.name,
+        price: item.price,
+      };
+      axios.defaults.withCredentials = true;
+      axios
+        .post("http://localhost:3001/purchase/makePurchase", cartItem)
+        .then((response) => {
+          console.log("Status Code : ", response.status);
+          alert("Purchase Successful");
+          navigate( "/purchase" );
+
+          //   if (
+          //     response.status === 200 &&
+          //     response.data === constants.ITEM_ADDED_SUCCESSFULLY
+          //   ) {
+          //     alert("Item added succussesfully.");
+          //   }
+        });
+    });
+  };
 
   return (
     <Container>
@@ -167,7 +169,7 @@ function Cart() {
           <button
             className="btn btn-primary"
             type="button"
-              onClick={handlePlaceOrder}
+            onClick={handlePlaceOrder}
           >
             Place order for total Amount : {orderPrice}
           </button>
