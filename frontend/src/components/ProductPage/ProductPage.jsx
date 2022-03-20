@@ -26,7 +26,7 @@ function ProductPage() {
       //code to get product in
 
       axios
-        .post("http://localhost:3001/products/getProduct", productInfo)
+        .post("/products/getProduct", productInfo)
         .then((response) => {
           //update the state with the response data
           console.log(
@@ -55,7 +55,7 @@ function ProductPage() {
       };
       axios.defaults.withCredentials = true;
           axios
-            .post("http://localhost:3001/cart/addToCart", cartItem)
+            .post("/cart/addToCart", cartItem)
             .then((response) => {
               console.log("Status Code : ", response.status);
               if (

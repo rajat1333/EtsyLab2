@@ -24,7 +24,7 @@ export default function Favourites() {
 
     axios.defaults.withCredentials = true;
     axios
-      .post("http://localhost:3001/user/getUser", userData)
+      .post("/user/getUser", userData)
       .then((response) => {
         console.log("Status Code : ", response.status);
         let userDetails = response.data;

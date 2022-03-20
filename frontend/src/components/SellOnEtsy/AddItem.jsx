@@ -83,7 +83,7 @@ function AddItem(props) {
           //code to add user object
           axios.defaults.withCredentials = true;
           axios
-            .post("http://localhost:3001/shop/addItem", newItem)
+            .post("/shop/addItem", newItem)
             .then((response) => {
               console.log("Status Code : ", response.status);
               if (

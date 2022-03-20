@@ -24,7 +24,7 @@ function ShopUserAvailablity() {
     }
     if(userEmailId!=null){
       axios.defaults.withCredentials = true;
-      axios.post('http://localhost:3001/shop/shopExists',userData)
+      axios.post('/shop/shopExists',userData)
       .then(response => {
         console.log("Status Code : ",response.status);
         let shopDetails = response.data;
@@ -51,7 +51,7 @@ function ShopUserAvailablity() {
    
     if(shopName !=""){
       axios.defaults.withCredentials = true;
-      axios.post('http://localhost:3001/shop/checkAvailability',data)
+      axios.post('/shop/checkAvailability',data)
       .then(response => {
         console.log("Status Code : ",response.status);
         if(response.status === 200 && response.data === constants.USER_NAME_AVAILABLE ){

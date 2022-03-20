@@ -20,7 +20,7 @@ class Home extends Component {
     const userInfo = {
       emaiId : cookie.load("cookie")
     }
-      axios.post('http://localhost:3001/home', userInfo)
+      axios.post('/home', userInfo)
               .then((response) => {
               //update the state with the response data
               console.log("Getting data from backend : " + response.data)

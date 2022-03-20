@@ -30,7 +30,7 @@ function ShopHomePage() {
     if (shopName != null) {
       axios.defaults.withCredentials = true;
       axios
-        .post("http://localhost:3001/shop/shopExists", userData)
+        .post("/shop/shopExists", userData)
         .then((response) => {
           console.log("Status Code : ", response.status);
           let shopDetails = response.data;
@@ -50,7 +50,7 @@ function ShopHomePage() {
     //code to load all the shop items
 
     axios
-      .post("http://localhost:3001/shop/shopProducts", userData)
+      .post("/shop/shopProducts", userData)
       .then((response) => {
         //update the state with the response data
         console.log(
@@ -82,7 +82,7 @@ function ShopHomePage() {
           };
           axios.defaults.withCredentials = true;
           axios
-            .post("http://localhost:3001/shop/updateShop", updateData)
+            .post("/shop/updateShop", updateData)
             .then((response) => {
               console.log("Status Code : ", response.status);
             });

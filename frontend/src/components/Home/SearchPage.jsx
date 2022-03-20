@@ -20,7 +20,7 @@ function SearchPage() {
       searchString : searchString
     }
     axios
-      .post("http://localhost:3001/search", serachInfo) 
+      .post("/search", serachInfo) 
       .then((response) => {
         //update the state with the response data
         console.log("Getting data from backend");
@@ -126,7 +126,7 @@ export default SearchPage
 //       searchString : ""
 //     }
 //     axios
-//       .post("http://localhost:3001/search", serachInfo) //todo : change url
+//       .post("/search", serachInfo) //todo : change url
 //       .then((response) => {
 //         //update the state with the response data
 //         console.log("Getting data from backend");

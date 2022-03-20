@@ -32,7 +32,7 @@ export default function UserProfile() {
 
     axios.defaults.withCredentials = true;
     axios
-      .post("http://localhost:3001/user/getUser", userData)
+      .post("/user/getUser", userData)
       .then((response) => {
         console.log("Status Code : ", response.status);
         let userDetails = response.data;
@@ -113,7 +113,7 @@ export default function UserProfile() {
     console.log(" user info is : " + JSON.stringify(userInfo));
     axios.defaults.withCredentials = true;
     axios
-      .post("http://localhost:3001/user/updateUser", userInfo)
+      .post("/user/updateUser", userInfo)
       .then((response) => {
         console.log("Status Code : ", response.status);
         alert("User information updated successfully");

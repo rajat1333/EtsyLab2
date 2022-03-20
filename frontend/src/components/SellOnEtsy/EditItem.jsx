@@ -76,7 +76,7 @@ function EditItem(props) {
       //code to add user object
       axios.defaults.withCredentials = true;
       axios
-        .post("http://localhost:3001/shop/editItem", editedItem)
+        .post("/shop/editItem", editedItem)
         .then((response) => {
           console.log("Status Code : ", response.status);
           if(response.status === 200 && response.data === constants.ITEM_EDITED_SUCCESSFULLY ){

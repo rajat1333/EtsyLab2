@@ -29,7 +29,7 @@ function Purchase() {
     //code to get product in
 
     axios
-      .post("http://localhost:3001/purchase/getPurchaseItems", userInfo)
+      .post("/purchase/getPurchaseItems", userInfo)
       .then((response) => {
         //update the state with the response data
         console.log(
@@ -71,7 +71,7 @@ function Purchase() {
           };
           axios.defaults.withCredentials = true;
               axios
-                .post("http://localhost:3001/purchase/makePurchase", cartItem)
+                .post("/purchase/makePurchase", cartItem)
                 .then((response) => {
                   console.log("Status Code : ", response.status);
                   if (
