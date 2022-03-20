@@ -21,11 +21,6 @@ function ShopProduct(props) {
           <div>Product price is {product.price}</div>
         </div>
         <div className="card-footer">
-          {/* <div className="float-left">
-            <button className="btn-group">
-              <button className="btn btn-outline-success">-</button>
-            </button>
-          </div> */}
           <button
               className="btn btn-primary"
               type="button"
@@ -35,7 +30,7 @@ function ShopProduct(props) {
             >
               Edit Item
             </button>
-            {openModal && <EditItem closeModal={setOpenModal} product ={product} />}
+            {openModal && <EditItem closeModal={setOpenModal} product ={product} updateProduct={setProduct} />}
 
         </div>
       </div>

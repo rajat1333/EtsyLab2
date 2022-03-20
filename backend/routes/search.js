@@ -1,6 +1,6 @@
 const express = require('express');
 const router =  express.Router();
-const home = require('../controllers/home');
+const search = require('../controllers/search');
 
-router.post('/', home);
+router.post('/', search);
 module.exports = router;

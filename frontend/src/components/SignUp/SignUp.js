@@ -1,11 +1,8 @@
 import React, {Component} from 'react';
 import '../../App.css';
 import axios from 'axios';
-import cookie from 'react-cookies';
-import {Redirect} from 'react-router';
 import * as constants from '../../config/constants'
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { signUp } from '../../js/actions/signUpActionCreator';
 
 //Define a Login Component
@@ -101,7 +98,7 @@ class SignUp extends Component{
                             authFlag : true
                         })
                         alert("User create successFully")
-                        //window.open('/login','_self');
+                        window.open('/login','_self');
                     }
                     if(response.status === 200 && response.data === constants.USER_ALREADY_EXISTS){
                         alert("User name or email id is already taken");
@@ -109,7 +106,7 @@ class SignUp extends Component{
                             authFlag : false,
                             message : "User with given email Id already exists"
                         })
-                        window.open('/login','_self');
+                        window.open('/signUp','_self');
                     
                         
                     }

@@ -8,9 +8,10 @@ import Footer from "./Footer/Footer";
 import UserProfile from "./UserProfile/UserProfile";
 import ShopUserAvailablity from "./SellOnEtsy/ShopUserAvailablity";
 import ShopHomePage from "./SellOnEtsy/ShopHomePage";
-import SearchPage from "./Home/searchPage";
+import SearchPage from "./Home/SearchPage";
 import Favourites from "./Favourites/Favourites";
 import ProductPage from "./ProductPage/ProductPage";
+import Cart from "./Cart/Cart";
 
 //Create a Main Component
 class Main extends Component {
@@ -21,13 +22,15 @@ class Main extends Component {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/home" element={<Home />} />
-          <Route path="/search" element={<SearchPage />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/search/:searchString" element={<SearchPage />} />
           <Route path="/favourites" element={<Favourites />} />
           <Route path="/userProfile" element={<UserProfile />} />
-          <Route path="/productPage" element={<ProductPage />} />
+          <Route path="/productPage/:productId" element={<ProductPage />} />
           <Route path="/shopUserAvailablity" element={<ShopUserAvailablity />} />
           <Route path="/shopHomePage/:shopName" element={<ShopHomePage />} />
           <Route path="/signUp" element={<SignUp />} />
+          <Route path="/cart" element={<Cart />} />
         </Routes>
       </div>
     );

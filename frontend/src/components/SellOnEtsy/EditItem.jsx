@@ -7,18 +7,20 @@ import * as constants from '../../config/constants'
 
 function EditItem(props) {
   // const [newItem, setNewItem] = useState({});
+  const [id, setId] = useState(props.product.id);
   const [image, setImage] = useState(props.product.image);
+  const [newImage, setNewImage] = useState(null);
   const [name, setName] = useState(props.product.name);
   const [description, setDescriptoin] = useState(props.product.description);
   const [price, setPrice] = useState(props.product.price);
   const [category, setCategory] = useState(props.product.category);
   const [quantity, setQantity] = useState(props.product.quantity);
-  // const [shopName, setShopName] = useState();
+  const [shop_name, setShopName] = useState(props.product.shop_name);
   console.log("shop name from parent component is : " + props.name);
 
   const handleImageChange = (e) => {
     if (e.target.files[0]) {
-      setImage(e.target.files[0]);
+    setNewImage(e.target.files[0]);
     }
   };
   const handleNameChange = (e) => {
@@ -48,39 +50,41 @@ function EditItem(props) {
   };
 
   const handleSubmit = (e) => {
-    if (image != null) {
-      console.log("image object is : " + image);
-      const storageRef = ref(storage_bucket, image.name);
+    if (newImage != null) {
+      console.log("image object is : " + newImage);
+      const storageRef = ref(storage_bucket, newImage.name);
       // 'file' comes from the Blob or File API
-      uploadBytes(storageRef, image)
+      uploadBytes(storageRef, newImage)
         .then((snapshot) => {
           return getDownloadURL(snapshot.ref);
         })
         .then((downloadURL) => {
           console.log("Download URL", downloadURL);
           setImage(downloadURL)
-          const newItem = {
-            name: name,
-            description: description,
-            price: price,
-            shop_name: props.name,
-            category: category,
-            quantity: quantity,
-            image: downloadURL,
-          };
-          //code to add user object
-          axios.defaults.withCredentials = true;
-          axios
-            .post("http://localhost:3001/shop/addItem", newItem)
-            .then((response) => {
-              console.log("Status Code : ", response.status);
-              if(response.status === 200 && response.data === constants.ITEM_ADDED_SUCCESSFULLY ){
-                alert("Item added succussesfully.");
-                props.closeModal(false);
-              }
-            });
         });
     }
+    const editedItem = {
+        id: id,
+        name: name,
+        description: description,
+        price: price,
+        shop_name: shop_name,
+        category: category,
+        quantity: quantity,
+        image: image
+      };
+      //code to add user object
+      axios.defaults.withCredentials = true;
+      axios
+        .post("http://localhost:3001/shop/editItem", editedItem)
+        .then((response) => {
+          console.log("Status Code : ", response.status);
+          if(response.status === 200 && response.data === constants.ITEM_EDITED_SUCCESSFULLY ){
+            alert("Item added succussesfully.");
+            props.updateProduct(editedItem)
+            props.closeModal(false);
+          }
+        });
   };
 
   return (
@@ -101,7 +105,7 @@ function EditItem(props) {
         </Modal.Header>
         <Modal.Body>
           <h4>Please enter Edit the details</h4>
-          <h6>Upload Item Photo</h6>
+          <h6>Upload New Image</h6>
           <input
             type="file"
             className="form-control"

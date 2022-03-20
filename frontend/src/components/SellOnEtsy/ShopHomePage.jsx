@@ -9,16 +9,19 @@ import EtsyNavigationBar from "../LandingPage/EtsyNavigationBar";
 import Footer from "../Footer/Footer";
 import { Container, Row, Col } from "react-bootstrap";
 import ShopProduct from "./ShopProduct";
+import Product from "../Home/Product";
 
 function ShopHomePage() {
+  let { shopName } = useParams();
   const [openModal, setOpenModal] = useState(false);
   const [shop, setShop] = useState(null);
-  const [image, setImage] = useState("./shop.jpg");
+  const [image, setImage] = useState("https://firebasestorage.googleapis.com/v0/b/etsy-65478.appspot.com/o/Screenshot%202022-03-20%20013933.jpg?alt=media&token=67056293-a402-4b94-abb0-aebb9f72a9c3");
+  const [tempImage, setTempImage] = useState();
   const [shopProducts, setshopProducts] = useState(null);
-  let { shopName } = useParams();
   console.log("shop name is : " + shopName);
   console.log("shop object is : " + JSON.stringify(shop));
   console.log("products : " + JSON.stringify(shopProducts));
+  let currentUser = cookie.load("cookie");
 
   useEffect(() => {
     const userData = {
@@ -46,26 +49,28 @@ function ShopHomePage() {
 
     //code to load all the shop items
 
-    axios.post("http://localhost:3001/shop/shopProducts", userData).then((response) => {
-      //update the state with the response data
-      console.log(
-        "Getting data from backend : " + JSON.stringify(response.data)
-      );
-      setshopProducts(response.data);
-    });
+    axios
+      .post("http://localhost:3001/shop/shopProducts", userData)
+      .then((response) => {
+        //update the state with the response data
+        console.log(
+          "Getting data from backend : " + JSON.stringify(response.data)
+        );
+        setshopProducts(response.data);
+      });
   }, []);
 
   const handleImageChange = (e) => {
     if (e.target.files[0]) {
-      setImage(e.target.files[0]);
+      setTempImage(e.target.files[0]);
     }
   };
   const handleUpload = (e) => {
-    if (image != null) {
-      console.log(image);
-      const storageRef = ref(storage_bucket, image.name);
+    if (tempImage != null) {
+      console.log(tempImage);
+      const storageRef = ref(storage_bucket, tempImage.name);
       // 'file' comes from the Blob or File API
-      uploadBytes(storageRef, image)
+      uploadBytes(storageRef, tempImage)
         .then((snapshot) => {
           return getDownloadURL(snapshot.ref);
         })
@@ -97,55 +102,70 @@ function ShopHomePage() {
     redirectVar = <Navigate to="/login" />;
   }
   let shopProductVar = null;
-  if(shopProducts!=null){
+  if (shopProducts != null && shop!=null) {
     shopProductVar = (
       <Row>
-              {shopProducts.map((prod) => {
-                return (
-                  <Col md={3}>
-                    <ShopProduct
-                      key={prod.id}
-                      id={prod.id}
-                      name={prod.name}
-                      price={prod.price}
-                      product={prod}
-                    />
-                  </Col>
-                );
-              })}
-            </Row>
-    )
+        {shopProducts.map((prod) => {
+          return (
+            <Col md={3}>
+              {currentUser == shop.email_id && (
+                <ShopProduct
+                  key={prod.id}
+                  id={prod.id}
+                  name={prod.name}
+                  price={prod.price}
+                  product={prod}
+                />
+              )}
+              {currentUser != shop.email_id && (
+                <Product
+                  key={prod.id}
+                  id={prod.id}
+                  name={prod.name}
+                  price={prod.price}
+                  product={prod}
+                />
+              )}
+            </Col>
+          );
+        })}
+      </Row>
+    );
   }
-
-  return (
-    <Container>
-      {redirectVar}
-      <EtsyNavigationBar />
+  let pageContent = null;
+  
+  if (shop != null) {
+    pageContent = (
       <div className="container bootstrap snippets bootdey">
         <h1 className="text-primary">Welcome to : {shopName}</h1>
         <hr />
         <div className="row">
           <div className="col-md-3">
             <div className="text-center">
+              <br />
               <img
                 src={image}
                 className="avatar img-circle img-thumbnail"
                 alt="avatar"
               />
-              <h6>Upload a different Shop photo...</h6>
-              <input
-                type="file"
-                className="form-control"
-                onChange={handleImageChange}
-              />
-              <br />
-              <button
-                className="btn btn-primary"
-                type="button"
-                onClick={handleUpload}
-              >
-                Upload Image
-              </button>
+              {currentUser == shop.email_id && (
+                <div>
+                  <h6>Upload a different Shop photo...</h6>
+                  <input
+                    type="file"
+                    className="form-control"
+                    onChange={handleImageChange}
+                  />
+                  <br />
+                  <button
+                    className="btn btn-primary"
+                    type="button"
+                    onClick={handleUpload}
+                  >
+                    Upload Image
+                  </button>
+                </div>
+              )}
             </div>
           </div>
 
@@ -166,23 +186,24 @@ function ShopHomePage() {
                   />
                 </div>
               </div>
-
-              <br />
-              <button className="btn btn-primary" type="button">
-                Edit Shop
-              </button>
             </form>
             <br />
-            <button
-              className="btn btn-primary"
-              type="button"
-              onClick={() => {
-                setOpenModal(true);
-              }}
-            >
-              Add Item
-            </button>
-            {openModal && <AddItem closeModal={setOpenModal} name ={shopName} />}
+            <br />
+            {currentUser == shop.email_id && (
+              <button
+                className="btn btn-primary"
+                type="button"
+                onClick={() => {
+                  setOpenModal(true);
+                }}
+              >
+                Add Item
+              </button>
+            )}
+            <br />
+            <br />
+
+            {openModal && <AddItem closeModal={setOpenModal} name={shopName} />}
             {/* <AddItem /> */}
             <br />
             {shopProductVar}
@@ -191,6 +212,15 @@ function ShopHomePage() {
           </div>
         </div>
       </div>
+    );
+  }
+  
+
+  return (
+    <Container>
+      {redirectVar}
+      <EtsyNavigationBar />
+      {pageContent}
       <Footer />
     </Container>
   );

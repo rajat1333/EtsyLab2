@@ -17,7 +17,10 @@ class Home extends Component {
   }
   //get the books data from backend
   componentDidMount(){
-      axios.get('http://localhost:3001/home')
+    const userInfo = {
+      emaiId : cookie.load("cookie")
+    }
+      axios.post('http://localhost:3001/home', userInfo)
               .then((response) => {
               //update the state with the response data
               console.log("Getting data from backend : " + response.data)
