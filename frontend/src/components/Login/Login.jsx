@@ -86,7 +86,7 @@ class Login extends React.Component{
             //set the with credentials to true
             axios.defaults.withCredentials = true;
             //make a post request with the user data
-            axios.post('http://localhost:3001/login',data)
+            axios.post('/login',data)
                 .then(response => {
                     console.log("Status Code : ",response.status);
                     if(response.status === 200 && response.data === constants.SUCCESSFUL_LOGIN ){
