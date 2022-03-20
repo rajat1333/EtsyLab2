@@ -62,7 +62,7 @@ function ShopUserAvailablity() {
         if(response.status === 200 && response.data === constants.USER_NAME_UNAVAILABLE){
             alert("User name is unavailable please enter an different shopname");
             setShopName("");
-            window.open('/shop/checkAvailability','_self');
+            window.open('/shopUserAvailablity','_self');
         }
     });
     }

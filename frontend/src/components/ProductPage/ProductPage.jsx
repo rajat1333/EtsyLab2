@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { Container, ListGroup } from "react-bootstrap";
 import cookie from "react-cookies";
-import {  Navigate, useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 import Footer from "../Footer/Footer";
 import EtsyNavigationBar from "../LandingPage/EtsyNavigationBar";
 import axios from "axios";
+import * as constants from "../../config/constants";
+
 
 function ProductPage() {
   const [product, setProduct] = useState();
   const [orderQuantity, setproductQuantity] = useState(1);
   console.log("Product object is : " + JSON.stringify(product));
   console.log("productQuantity  is : " + orderQuantity);
+  let currentUser = cookie.load("cookie");
+  console.log("current user is " + currentUser)
   let { productId } = useParams();
 
   useEffect(() => {
@@ -41,9 +45,26 @@ function ProductPage() {
   const handleAddToCart = (e) => {
     if (orderQuantity > product.quantity) {
       alert("Please enter qantity less than available quantity");
-    }
-    else{
-
+    } else {
+      const cartItem = {
+        email_id: currentUser,
+        quantity: orderQuantity,
+        product_id: product.id,
+        name: product.name,
+        price: product.price,
+      };
+      axios.defaults.withCredentials = true;
+          axios
+            .post("http://localhost:3001/cart/addToCart", cartItem)
+            .then((response) => {
+              console.log("Status Code : ", response.status);
+              if (
+                response.status === 200 &&
+                response.data === constants.ITEM_ADDED_SUCCESSFULLY
+              ) {
+                alert("Item added succussesfully.");
+              }
+            });
     }
   };
 

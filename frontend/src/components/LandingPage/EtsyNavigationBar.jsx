@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import cookie from "react-cookies";
 import { connect } from "react-redux";
 import { logout } from "../../js/actions/logoutActionController";
@@ -58,11 +58,11 @@ function EtsyNavigationBar(props) {
       </ul>
     );
   }
-  let redirectVar = null;
 
-  // if (cookie.load("cookie")) {
-  //   redirectVar = <Redirect to="/home" />;
-  // }
+  let redirectVar = null;
+  if (!cookie.load("cookie")) {
+    redirectVar = <Navigate to="/login" />;
+  }
 
   let navBarVariable = null;
 
@@ -92,7 +92,8 @@ function EtsyNavigationBar(props) {
             <Nav className="me-auto">
               <Nav.Link href="/favourites">Favourites</Nav.Link>
               <Nav.Link href="/userProfile">User Profile</Nav.Link>
-              <Nav.Link href="/#link">Cart</Nav.Link>
+              <Nav.Link href="/cart">Cart</Nav.Link>
+              <Nav.Link href="/purchase">My Purchases</Nav.Link>
               <Nav.Link href="/shopUserAvailablity">Sell on Etsy</Nav.Link>
               <NavDropdown title="Dropdown" id="basic-nav-dropdown">
                 <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>

@@ -133,15 +133,16 @@ class SignUp extends Component{
                             <p>Please enter your details</p>
                         </div>
                         
-                            <div class="formStyle">
+                            {/* <div class="formStyle">
                                 <input onChange = {this.usernameChangeHandler} type="text" class="form-control" name="username" placeholder="Username"/>
+                            </div> */}
+                            <div class="formStyle">
+                                <input onChange = {this.emailIdChangeHandler} type="email" class="form-control" name="emailId" placeholder="Email Id"/>
                             </div>
                             <div class="formStyle">
                                 <input onChange = {this.passwordChangeHandler} type="password" class="form-control" name="password" placeholder="Password"/>
                             </div>
-                            <div class="formStyle">
-                                <input onChange = {this.emailIdChangeHandler} type="email" class="form-control" name="emailId" placeholder="Email Id"/>
-                            </div>
+                            
                             <br></br>
                             <button onClick = {this.submit} class="btn btn-primary">Register User</button> <br></br><br></br>
                             {/* <button onClick = {this.signUpHandler} class="btn btn-primary">Sign Up</button> */}

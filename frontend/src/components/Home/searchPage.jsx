@@ -3,7 +3,7 @@ import "../../App.css";
 import axios from "axios";
 import cookie from "react-cookies";
 import { Navigate, useParams } from "react-router-dom";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, Form } from "react-bootstrap";
 import Product from "./Product";
 import Footer from "../Footer/Footer";
 import EtsyNavigationBar from "../LandingPage/EtsyNavigationBar";
@@ -42,7 +42,50 @@ function SearchPage() {
         {redirectVar}
         <EtsyNavigationBar />
         <Container>
-          <h2>Etsy Search Page</h2>
+          <hr />
+
+
+          <Row className="justify-content-between mb-3">
+        <Col md={3}>
+          <h2>Search Results</h2>
+        </Col>
+        <Col>
+          <Form>
+            <Form.Check
+              type="switch"
+              id="custom-switch"
+              label="Show available products"
+              
+            />
+          </Form>
+        </Col>
+        <Col className="text-end">
+          Price{" "}
+          <select value="default" >
+            <option value="default">No Filter</option>
+            <option value="first">1 to 100</option>
+            <option value="second">100 to 500</option>
+            <option value="third">500+</option>
+          </select>
+        </Col>
+        <Col className="text-end">
+          Sort by{" "}
+          <select value="default" >
+          <option value="default">No Filter</option>
+            <option value="lowest">Price: Low to High</option>
+            <option value="highest">Price: High to Low</option>
+            <option value="available">Availability: High to Low</option>
+            <option value="sales">Total sold: High to Low</option>
+          </select>
+        </Col>
+      </Row>
+      <hr />
+
+
+
+
+
+
           {products!=null && <Row>
             {products.map((prod) => {
               return (

@@ -16,9 +16,9 @@ import Footer from "../Footer/Footer";
 import * as constants from "../../config/constants";
 
 
-function Cart() {
+function Purchase() {
   let currentUser = cookie.load("cookie");
-  const [cartItems, setCartItems] = useState();
+  const [purchaseItems, setPurchaseItems] = useState();
   const [orderPrice, setOrderPrice] = useState(0);
   console.log("current user is " + currentUser);
 
@@ -29,7 +29,7 @@ function Cart() {
     //code to get product in
 
     axios
-      .post("http://localhost:3001/cart/getCartItems", userInfo)
+      .post("http://localhost:3001/purchase/getPurchaseItems", userInfo)
       .then((response) => {
         //update the state with the response data
         console.log(
@@ -39,7 +39,7 @@ function Cart() {
         console.log("productArray is : " + JSON.stringify(productArray));
 
         if (productArray != null && productArray.length != 0) {
-          setCartItems(productArray);
+          setPurchaseItems(productArray);
           let tempOrderPrice = 0;
           productArray.map((item) => {
             tempOrderPrice += item.price * item.quantity;
@@ -55,13 +55,13 @@ function Cart() {
   }
   const calculateOrderPrice = () => {
     let tempOrderPrice = 0;
-    cartItems.map((item) => {
+    purchaseItems.map((item) => {
       tempOrderPrice += item.price * item.quantity;
     });
     return tempOrderPrice;
   };
   const handlePlaceOrder = ()=>{
-    cartItems.map((item) => {
+    purchaseItems.map((item) => {
         const cartItem = {
             email_id: currentUser,
             quantity: item.quantity,
@@ -88,21 +88,21 @@ function Cart() {
     <Container>
       <EtsyNavigationBar />
       {redirectVar}
-      <title>Shopping Cart</title>
+      <title>Purshase Page</title>
 
-      <h1>Shopping Cart</h1>
+      <h1>Purshase Page</h1>
       <br />
       <br />
-      {cartItems == null && (
+      {purchaseItems == null && (
         <div>
-          <h2>Your Shoping cart is empty</h2>
+          <h2>You don't have any recent purchases</h2>
           <br />
           <br />
           <br />
           <br />
         </div>
       )}
-      {cartItems != null && (
+      {purchaseItems != null && (
         <div>
           <Row>
             <Col md={8}>
@@ -121,10 +121,13 @@ function Cart() {
                     <Col md={2}>
                       <h5>Total Price</h5>
                     </Col>
+                    <Col md={3}>
+                      <h5>Date of order</h5>
+                    </Col>
                   </Row>
                 </ListGroupItem>
 
-                {cartItems.map((item) => (
+                {purchaseItems.map((item) => (
                   <ListGroup.Item key={item.prodcut_id}>
                     <Row className="align-items-center">
                       <Col md={2}>
@@ -138,6 +141,7 @@ function Cart() {
                         {/* {setOrderPrice(orderPrice + item.price * item.quantity)} */}
                         {parseFloat(item.price * item.quantity).toFixed(2)}
                       </Col>
+                      <Col md={3}>{item.date}</Col>
                     </Row>
                   </ListGroup.Item>
                 ))}
@@ -164,13 +168,13 @@ function Cart() {
             </Col>
           </Row>
           <br />
-          <button
+          {/* <button
             className="btn btn-primary"
             type="button"
               onClick={handlePlaceOrder}
           >
             Place order for total Amount : {orderPrice}
-          </button>
+          </button> */}
         </div>
       )}
 
@@ -183,4 +187,4 @@ function Cart() {
   );
 }
 
-export default Cart;
+export default Purchase;

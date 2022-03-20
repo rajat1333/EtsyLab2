@@ -12,6 +12,7 @@ import SearchPage from "./Home/SearchPage";
 import Favourites from "./Favourites/Favourites";
 import ProductPage from "./ProductPage/ProductPage";
 import Cart from "./Cart/Cart";
+import Purchase from "./Purchase/Purchase";
 
 //Create a Main Component
 class Main extends Component {
@@ -31,6 +32,7 @@ class Main extends Component {
           <Route path="/shopHomePage/:shopName" element={<ShopHomePage />} />
           <Route path="/signUp" element={<SignUp />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/purchase" element={<Purchase />} />
         </Routes>
       </div>
     );

@@ -15,7 +15,7 @@ function ShopHomePage() {
   let { shopName } = useParams();
   const [openModal, setOpenModal] = useState(false);
   const [shop, setShop] = useState(null);
-  const [image, setImage] = useState("https://firebasestorage.googleapis.com/v0/b/etsy-65478.appspot.com/o/Screenshot%202022-03-20%20013933.jpg?alt=media&token=67056293-a402-4b94-abb0-aebb9f72a9c3");
+  const [image, setImage] = useState("https://bootdey.com/img/Content/avatar/avatar7.png");
   const [tempImage, setTempImage] = useState();
   const [shopProducts, setshopProducts] = useState(null);
   console.log("shop name is : " + shopName);
@@ -41,8 +41,8 @@ function ShopHomePage() {
             console.log("shop is  are : " + JSON.stringify(shopObject));
             setShop(shopObject);
             let shop_image = shopDetails[0].shop_image;
-            setImage(shop_image);
-            if (shop != null) setImage(shop_image);
+            // setImage(shop_image);
+            if (shop_image != null) setImage(shop_image);
           }
         });
     }
@@ -164,6 +164,8 @@ function ShopHomePage() {
                   >
                     Upload Image
                   </button>
+                  <br />
+                  <br />
                 </div>
               )}
             </div>
@@ -181,7 +183,7 @@ function ShopHomePage() {
                   <input
                     className="form-control"
                     type="text"
-                    value="dey-dey"
+                    value={shop.email_id}
                     readOnly
                   />
                 </div>

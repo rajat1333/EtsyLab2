@@ -14,18 +14,23 @@ function Product(props) {
   return (
     <div className="card m-2">
       <div className="card-body">
-        <h5 className="pt-2">{product.name} </h5>
-        <img src="https://picsum.photos/id/1010/200" alt="Customer" />
+        
+        {/* <img src="https://picsum.photos/id/1010/200" alt="Customer" /> */}
+        <img src={product.image} alt="Customer" width="200" height="200"/>
         <div>
-          Product Id is {product.id}
+          {/* Product Id is {product.id} */}
           <span className="pull-right hand-icon">
             <i className="fa fa-times"></i>
           </span>
         </div>
-        <div>Product price is {product.price}</div>
+        <h5 className="pt-2">{product.name} </h5>
+        <div>Price : $ {product.price} </div>
+        {/* <div>Available Quantity : {product.quantity}</div> */}
       </div>
       <div className="card-footer">
-        <button className="btn btn-primary" onClick={handleBuyNow} >Buy Now</button><br /><br />
+        {product.quantity<1 && <div><div>Item Out of stock</div><button className="btn btn-primary" onClick={handleBuyNow} >View Item</button><br /><br /></div>}
+        {product.quantity>0 && <div><button className="btn btn-primary" onClick={handleBuyNow} >Buy Now</button><br /><br /></div>}
+        
         <button className="btn btn-primary" onClick={handleAddToFav}>Add to Fav</button>
       </div>
     </div>

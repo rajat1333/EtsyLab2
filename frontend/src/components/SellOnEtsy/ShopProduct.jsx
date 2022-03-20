@@ -13,12 +13,11 @@ function ShopProduct(props) {
       <div className="card m-2">
         <div className="card-body">
         
-          <h5 className="pt-2">{product.name} </h5>
+          
           <img src={product.image} alt="Customer" width="150" height="150"/>
-          <div>Product Id is {product.id}
             <span className="pull-right hand-icon"><i className="fa fa-times"></i></span>
-          </div>
-          <div>Product price is {product.price}</div>
+            <h5 className="pt-2">{product.name} </h5>
+          <div>Price : $ {product.price}</div>
         </div>
         <div className="card-footer">
           <button
