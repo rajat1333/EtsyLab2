@@ -95,7 +95,7 @@ function ProductPage() {
 
             <ListGroup.Item>Category : {product.category}</ListGroup.Item>
             <br />
-            <ListGroup.Item>Price : {product.price}</ListGroup.Item>
+            <ListGroup.Item>Price : $ {product.price}</ListGroup.Item>
             <br />
             <ListGroup.Item>Quantity : {product.quantity}</ListGroup.Item>
             <br />
