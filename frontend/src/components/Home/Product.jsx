@@ -9,6 +9,7 @@ function Product(props) {
     navigate( "/productPage/" + product.id);
   }
   const handleAddToFav = (e)=>{
+    alert("Item added to Favourites")
     //todo add handling for fav
   }
   return (
