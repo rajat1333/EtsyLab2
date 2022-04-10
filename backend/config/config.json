@@ -6,5 +6,6 @@
         "port" : 3306,
         "database" : "etsy"
     },
-    "secret" : "mysql"
+    "secret" : "mysql",
+    "mongoDB": "mongodb+srv://admin:admin@cluster0.zp1oj.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
 }
