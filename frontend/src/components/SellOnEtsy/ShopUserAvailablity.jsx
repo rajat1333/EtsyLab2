@@ -1,8 +1,8 @@
 import React, { Component, useState, useEffect } from "react";
 import { Container } from "react-bootstrap";
 import cookie from "react-cookies";
-import axios from 'axios';
-import * as constants from '../../config/constants'
+import axios from "axios";
+import * as constants from "../../config/constants";
 import { useNavigate, Navigate } from "react-router-dom";
 import EtsyNavigationBar from "../LandingPage/EtsyNavigationBar";
 
@@ -18,58 +18,56 @@ function ShopUserAvailablity() {
     NavigateVar = <Navigate to="/login" />;
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     const userData = {
-      emailId : userEmailId
-    }
-    if(userEmailId!=null){
+      emailId: userEmailId,
+    };
+    if (userEmailId != null) {
       axios.defaults.withCredentials = true;
-      axios.post('/shop/shopExists',userData)
-      .then(response => {
-        console.log("Status Code : ",response.status);
+      axios.post("/shop/shopExists", userData).then((response) => {
+        console.log("Status Code : ", response.status);
         let shopDetails = response.data;
-        console.log("shopDetails are : " + JSON.stringify(shopDetails))
-        if(shopDetails!=null && shopDetails.length != 0){
-          let shopName = shopDetails[0].name;
-          console.log("shop name is : " + shopName)
-          navigate( "/shopHomePage/" + shopName);
-        }
-    });
-    }
-    
-  },[]);
+        console.log("shopDetails are : " + JSON.stringify(shopDetails));
 
-  
-  const handleShopNameChange = (e) =>{
+        let shopName = shopDetails.name;
+        console.log("shop name is : " + shopName);
+        navigate("/shopHomePage/" + shopName);
+      });
+    }
+  }, []);
+
+  const handleShopNameChange = (e) => {
     setShopName(e.target.value);
-  }
-  const checkAvailability = (e)=>{
+  };
+  const checkAvailability = (e) => {
     const data = {
-      shopName : shopName,
-      emailId : userEmailId
-    }
-   
-    if(shopName !=""){
-      axios.defaults.withCredentials = true;
-      axios.post('/shop/checkAvailability',data)
-      .then(response => {
-        console.log("Status Code : ",response.status);
-        if(response.status === 200 && response.data === constants.USER_NAME_AVAILABLE ){
-            console.log("User name is available");
-            alert("User name is available. Your has been named : " + shopName);
-            navigate( "/shopHomePage/" + shopName);
-  
-        }
-        if(response.status === 200 && response.data === constants.USER_NAME_UNAVAILABLE){
-            alert("User name is unavailable please enter an different shopname");
-            setShopName("");
-            window.open('/shopUserAvailablity','_self');
-        }
-    });
-    }
-    
+      shopName: shopName,
+      emailId: userEmailId,
+    };
 
-  }
+    if (shopName != "") {
+      axios.defaults.withCredentials = true;
+      axios.post("/shop/checkAvailability", data).then((response) => {
+        console.log("Status Code : ", response.status);
+        if (
+          response.status === 200 &&
+          response.data === constants.USER_NAME_AVAILABLE
+        ) {
+          console.log("User name is available");
+          alert("User name is available. Your has been named : " + shopName);
+          navigate("/shopHomePage/" + shopName);
+        }
+        if (
+          response.status === 200 &&
+          response.data === constants.USER_NAME_UNAVAILABLE
+        ) {
+          alert("User name is unavailable please enter an different shopname");
+          setShopName("");
+          window.open("/shopUserAvailablity", "_self");
+        }
+      });
+    }
+  };
 
   return (
     <Container>
@@ -92,7 +90,11 @@ function ShopUserAvailablity() {
           width={50}
           onChange={handleShopNameChange}
         />
-        <button type="button" className="btn btn-outline-primary" onClick={checkAvailability}>
+        <button
+          type="button"
+          className="btn btn-outline-primary"
+          onClick={checkAvailability}
+        >
           Check Availability
         </button>
       </div>

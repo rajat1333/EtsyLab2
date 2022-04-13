@@ -15,7 +15,9 @@ function ShopHomePage() {
   let { shopName } = useParams();
   const [openModal, setOpenModal] = useState(false);
   const [shop, setShop] = useState(null);
-  const [image, setImage] = useState("https://bootdey.com/img/Content/avatar/avatar7.png");
+  const [image, setImage] = useState(
+    "https://bootdey.com/img/Content/avatar/avatar7.png"
+  );
   const [tempImage, setTempImage] = useState();
   const [shopProducts, setshopProducts] = useState(null);
   console.log("shop name is : " + shopName);
@@ -29,35 +31,28 @@ function ShopHomePage() {
     };
     if (shopName != null) {
       axios.defaults.withCredentials = true;
-      axios
-        .post("/shop/shopExists", userData)
-        .then((response) => {
-          console.log("Status Code : ", response.status);
-          let shopDetails = response.data;
-          console.log("shopDetails are : " + JSON.stringify(shopDetails));
+      axios.post("/shop/shopExists", userData).then((response) => {
+        console.log("Status Code : ", response.status);
+        let shopDetails = response.data;
+        console.log("shopDetails are : " + shopDetails);
+        console.log("shopDetails are : " + JSON.stringify(shopDetails));
 
-          if (shopDetails != null && shopDetails.length != 0) {
-            let shopObject = shopDetails[0];
-            console.log("shop is  are : " + JSON.stringify(shopObject));
-            setShop(shopObject);
-            let shop_image = shopDetails[0].shop_image;
-            // setImage(shop_image);
-            if (shop_image != null) setImage(shop_image);
-          }
-        });
+        setShop(shopDetails);
+        let shop_image = shopDetails.shop_image;
+        // setImage(shop_image);
+        if (shop_image != null) setImage(shop_image);
+      });
     }
 
     //code to load all the shop items
 
-    axios
-      .post("/shop/shopProducts", userData)
-      .then((response) => {
-        //update the state with the response data
-        console.log(
-          "Getting data from backend : " + JSON.stringify(response.data)
-        );
-        setshopProducts(response.data);
-      });
+    axios.post("/shop/shopProducts", userData).then((response) => {
+      //update the state with the response data
+      console.log(
+        "Getting data from backend : " + JSON.stringify(response.data)
+      );
+      setshopProducts(response.data);
+    });
   }, []);
 
   const handleImageChange = (e) => {
@@ -81,11 +76,9 @@ function ShopHomePage() {
             imageSrc: downloadURL,
           };
           axios.defaults.withCredentials = true;
-          axios
-            .post("/shop/updateShop", updateData)
-            .then((response) => {
-              console.log("Status Code : ", response.status);
-            });
+          axios.post("/shop/updateShop", updateData).then((response) => {
+            console.log("Status Code : ", response.status);
+          });
 
           setImage(downloadURL);
         });
@@ -102,7 +95,7 @@ function ShopHomePage() {
     redirectVar = <Navigate to="/login" />;
   }
   let shopProductVar = null;
-  if (shopProducts != null && shop!=null) {
+  if (shopProducts != null && shop != null) {
     shopProductVar = (
       <Row>
         {shopProducts.map((prod) => {
@@ -133,7 +126,7 @@ function ShopHomePage() {
     );
   }
   let pageContent = null;
-  
+
   if (shop != null) {
     pageContent = (
       <div className="container bootstrap snippets bootdey">
@@ -216,7 +209,6 @@ function ShopHomePage() {
       </div>
     );
   }
-  
 
   return (
     <Container>

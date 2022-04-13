@@ -1,21 +1,39 @@
 const connPool = require("../../db/mysql");
 var mysql = require('mysql');
+const Products = require('../../Models/ProductModel');
 
 
 const shopProducts = (req, res) =>{
     let shopName = req.body.name;
     console.log("Inside get shop products");
     console.log("Shop name is : " + shopName);
-    let sqlQuerry = "Select * from products WHERE shop_name = " +  mysql.escape(shopName);
-    connPool.query(sqlQuerry, function (err, result) {
-    if (err) {
-      console.log(err);
-      return;
-    }
-    res.writeHead(200, {
-      "Content-Type": "application/json",
-    });
-    res.end(JSON.stringify(result));
-  });
+
+    Products.find({shop_name : shopName } , (err, allProducts)=>{
+      if (err) {
+        console.log(err);
+        return;
+      }
+      if(allProducts){
+        res.writeHead(200, {
+          "Content-Type": "application/json",
+        });
+        console.log("shop products from mongo are : " + JSON.stringify(allProducts))
+        res.end(JSON.stringify(allProducts));
+      }
+
+    })
+  //   let sqlQuerry = "Select * from products WHERE shop_name = " +  mysql.escape(shopName);
+  //   connPool.query(sqlQuerry, function (err, result) {
+  //   if (err) {
+  //     console.log(err);
+  //     return;
+  //   }
+  //   res.writeHead(200, {
+  //     "Content-Type": "application/json",
+  //   });
+  //   console.log("shop products are : " + JSON.stringify(result))
+  //   res.end(JSON.stringify(result));
+    
+  // });
 }
 module.exports = shopProducts;

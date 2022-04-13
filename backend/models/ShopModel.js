@@ -10,5 +10,5 @@ var shopsSchema = new Schema({
     versionKey: false
 });
 
-const userModel = mongoose.model('user', shopsSchema);
+const userModel = mongoose.model('shop', shopsSchema);
 module.exports = userModel;
