@@ -14,5 +14,5 @@ var productsSchema = new Schema({
     versionKey: false
 });
 
-const userModel = mongoose.model('user', productsSchema);
+const userModel = mongoose.model('product', productsSchema);
 module.exports = userModel;

@@ -49,7 +49,7 @@ function ProductPage() {
       const cartItem = {
         email_id: currentUser,
         quantity: orderQuantity,
-        product_id: product.id,
+        product_id: product._id,
         name: product.name,
         price: product.price,
       };

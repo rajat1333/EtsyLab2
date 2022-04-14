@@ -6,7 +6,7 @@ function Product(props) {
   const [product, setProduct] = useState(props.product);
   const navigate = useNavigate();
   const handleBuyNow = (e)=>{
-    navigate( "/productPage/" + product.id);
+    navigate( "/productPage/" + product._id);
   }
   const handleAddToFav = (e)=>{
     alert("Item added to Favourites")
