@@ -86,5 +86,6 @@ mongoose.connect(mongoDB, options, (err, res) => {
       console.log(`MongoDB Connected`);
   }
 });
+mongoose.set('useFindAndModify', false);
 
 module.exports = app;

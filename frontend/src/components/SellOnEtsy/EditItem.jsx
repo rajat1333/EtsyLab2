@@ -7,7 +7,7 @@ import * as constants from '../../config/constants'
 
 function EditItem(props) {
   // const [newItem, setNewItem] = useState({});
-  const [id, setId] = useState(props.product.id);
+  const [id, setId] = useState(props.product._id);
   const [image, setImage] = useState(props.product.image);
   const [newImage, setNewImage] = useState(null);
   const [name, setName] = useState(props.product.name);
@@ -64,7 +64,7 @@ function EditItem(props) {
         });
     }
     const editedItem = {
-        id: id,
+        _id: id,
         name: name,
         description: description,
         price: price,
