@@ -42,7 +42,7 @@ export default function UserProfile() {
           let userObject = userDetails[0];
           console.log("user is  are : " + JSON.stringify(userObject));
           setUser(userObject);
-          setId(userObject.id);
+          setId(userObject._id);
           setName(userObject.name);
           setUserName(userObject.user_name);
           setDateOfBirth(userObject.date_of_birth);
