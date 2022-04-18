@@ -12,5 +12,5 @@ var cartsSchema = new Schema({
     versionKey: false
 });
 
-const userModel = mongoose.model('user', cartsSchema);
+const userModel = mongoose.model('cart', cartsSchema);
 module.exports = userModel;
