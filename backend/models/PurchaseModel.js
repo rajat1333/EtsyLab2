@@ -13,5 +13,5 @@ var purchasesSchema = new Schema({
     versionKey: false
 });
 
-const userModel = mongoose.model('user', purchasesSchema);
+const userModel = mongoose.model('purchase', purchasesSchema);
 module.exports = userModel;

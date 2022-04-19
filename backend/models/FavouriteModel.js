@@ -9,5 +9,5 @@ var favouritesSchema = new Schema({
     versionKey: false
 });
 
-const userModel = mongoose.model('user', favouritesSchema);
+const userModel = mongoose.model('favourite', favouritesSchema);
 module.exports = userModel;
