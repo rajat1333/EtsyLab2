@@ -15,7 +15,7 @@ export default function Favourites() {
     "https://bootdey.com/img/Content/avatar/avatar7.png"
   );
   const [tempImage, setTempImage] = useState();
-  let userEmailId = cookie.load("cookie");
+  let userEmailId = localStorage.getItem('username');
 
   useEffect(() => {
     const userData = {
@@ -23,6 +23,7 @@ export default function Favourites() {
     };
 
     axios.defaults.withCredentials = true;
+    axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
     axios
       .post("/user/getUser", userData)
       .then((response) => {
@@ -39,7 +40,7 @@ export default function Favourites() {
   }, []);
 
   let redirectVar = null;
-  if (!cookie.load("cookie")) {
+  if (!localStorage.getItem('token')) {
     redirectVar = <Navigate to="/login" />;
   }
 

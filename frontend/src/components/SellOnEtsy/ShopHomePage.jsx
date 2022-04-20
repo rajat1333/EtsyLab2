@@ -23,7 +23,7 @@ function ShopHomePage() {
   console.log("shop name is : " + shopName);
   console.log("shop object is : " + JSON.stringify(shop));
   console.log("products : " + JSON.stringify(shopProducts));
-  let currentUser = cookie.load("cookie");
+  let currentUser = localStorage.getItem('username');
 
   useEffect(() => {
     const userData = {
@@ -31,6 +31,8 @@ function ShopHomePage() {
     };
     if (shopName != null) {
       axios.defaults.withCredentials = true;
+      axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
+
       axios.post("/shop/shopExists", userData).then((response) => {
         console.log("Status Code : ", response.status);
         let shopDetails = response.data;
@@ -45,6 +47,7 @@ function ShopHomePage() {
     }
 
     //code to load all the shop items
+    axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
 
     axios.post("/shop/shopProducts", userData).then((response) => {
       //update the state with the response data
@@ -91,7 +94,7 @@ function ShopHomePage() {
   }
 
   let redirectVar = null;
-  if (!cookie.load("cookie")) {
+  if (!localStorage.getItem('token')) {
     redirectVar = <Navigate to="/login" />;
   }
   let shopProductVar = null;

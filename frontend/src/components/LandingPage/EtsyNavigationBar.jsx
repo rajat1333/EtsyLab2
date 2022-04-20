@@ -13,7 +13,8 @@ function EtsyNavigationBar(props) {
   const handleLogout = () => {
     console.log("inside logut function");
     // cookie.remove("cookie", { path: "/login" });
-    cookie.remove("cookie", { path: "/" });
+    // cookie.remove("cookie", { path: "/" });
+    localStorage.clear();
     window.open("/login", "_self");
     // props.logout();
     // navigate( "/login");
@@ -31,8 +32,8 @@ function EtsyNavigationBar(props) {
 
   //if Cookie is set render Logout Button
   let navLogin = null;
-  if (cookie.load("cookie")) {
-    console.log("Able to read cookie");
+  if (localStorage.getItem('token')) {
+    console.log("Able to read token");
     navLogin = (
       <ul className="nav navbar-nav navbar-right">
         <li>
@@ -46,7 +47,8 @@ function EtsyNavigationBar(props) {
     );
   } else {
     //Else display login button
-    console.log("Not Able to read cookie");
+    // console.log("Not Able to read cookie");
+    console.log("User session not established");
     navLogin = (
       <ul className="nav navbar-nav navbar-right">
         <li>
@@ -60,13 +62,13 @@ function EtsyNavigationBar(props) {
   }
 
   let redirectVar = null;
-  if (!cookie.load("cookie")) {
+  if (!localStorage.getItem('token')) {
     redirectVar = <Navigate to="/login" />;
   }
 
   let navBarVariable = null;
 
-  if (cookie.load("cookie")) {
+  if (localStorage.getItem('token')) {
     navBarVariable = (
       <Navbar bg="light" expand="lg">
         <Container>

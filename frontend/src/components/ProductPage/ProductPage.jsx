@@ -13,7 +13,7 @@ function ProductPage() {
   const [orderQuantity, setproductQuantity] = useState(1);
   console.log("Product object is : " + JSON.stringify(product));
   console.log("productQuantity  is : " + orderQuantity);
-  let currentUser = cookie.load("cookie");
+  let currentUser = localStorage.getItem('username');
   console.log("current user is " + currentUser)
   let { productId } = useParams();
 
@@ -24,7 +24,7 @@ function ProductPage() {
     };
     if (productId != null) {
       //code to get product in
-
+      axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
       axios
         .post("/products/getProduct", productInfo)
         .then((response) => {
@@ -53,6 +53,7 @@ function ProductPage() {
         name: product.name,
         price: product.price,
       };
+      axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
       axios.defaults.withCredentials = true;
           axios
             .post("/cart/addToCart", cartItem)
@@ -69,7 +70,7 @@ function ProductPage() {
   };
 
   let redirectVar = null;
-  if (!cookie.load("cookie")) {
+  if (!localStorage.getItem('token')) {
     redirectVar = <Navigate to="/login" />;
   }
   let productContent = null;

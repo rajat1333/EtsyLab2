@@ -6,12 +6,14 @@ const editItem = require('../controllers/shop/editItem');
 const shopExists = require('../controllers/shop/shopExists');
 const shopProducts = require('../controllers/shop/shopProducts');
 const updateShop = require('../controllers/shop/updateShop');
+const { checkAuth } = require("../config/passport");
 
-router.post('/checkAvailability', checkAvailability);
-router.post('/shopExists', shopExists);
-router.post('/updateShop', updateShop);
-router.post('/shopProducts', shopProducts);
-router.post('/addItem', addItem);
-router.post('/editItem', editItem);
+
+router.post('/checkAvailability', checkAuth , checkAvailability);
+router.post('/shopExists', checkAuth , shopExists);
+router.post('/updateShop', checkAuth , updateShop);
+router.post('/shopProducts', checkAuth , shopProducts);
+router.post('/addItem', checkAuth , addItem);
+router.post('/editItem', checkAuth , editItem);
 
 module.exports = router;

@@ -19,6 +19,7 @@ function SearchPage() {
     const serachInfo = {
       searchString : searchString
     }
+    axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
     axios
       .post("/search", serachInfo) 
       .then((response) => {
@@ -34,7 +35,7 @@ function SearchPage() {
   
 
   let redirectVar = null;
-    if (!cookie.load("cookie")) {
+    if (!localStorage.getItem('token')) {
       redirectVar = <Navigate to="/login" />;
     }
     return (

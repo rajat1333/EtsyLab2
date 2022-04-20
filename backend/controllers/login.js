@@ -2,7 +2,10 @@ const connPool = require('../db/mysql');
 var mysql = require('mysql');
 var session = require('express-session');
 var constants = require("../config/constants.json")
-
+const jwt = require('jsonwebtoken');
+const { secret } = require('../config/config');
+const { auth } = require("../config/passport");
+auth();
 const Users = require('../Models/UserModel');
 
 const login = (req, res) =>{
@@ -23,11 +26,19 @@ const login = (req, res) =>{
       }
       if (mongoUser) {
         console.log("User from mongo is  " + JSON.stringify(mongoUser) );
-        res.cookie('cookie', mongoUser.email_id ,{maxAge: 900000, httpOnly: false, path : '/'});
-        req.session.user = mongoUser;
-        res.writeHead(200,{
-            'Content-Type' : 'text/plain'
-        })
+
+        const payload = { _id: mongoUser._id, username: mongoUser.email_id};
+        const token = jwt.sign(payload, secret, {
+            expiresIn: 1008000
+        });
+        res.status(200).end("JWT " + token);
+
+
+        // res.cookie('cookie', mongoUser.email_id ,{maxAge: 900000, httpOnly: false, path : '/'});
+        // req.session.user = mongoUser;
+        // res.writeHead(200,{
+        //     'Content-Type' : 'text/plain'
+        // })
         console.log("successful login");
         res.end(constants.SUCCESSFUL_LOGIN);
       }

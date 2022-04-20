@@ -17,7 +17,7 @@ import * as constants from "../../config/constants";
 
 
 function Purchase() {
-  let currentUser = cookie.load("cookie");
+  let currentUser = localStorage.getItem('username');
   const [purchaseItems, setPurchaseItems] = useState();
   const [orderPrice, setOrderPrice] = useState(0);
   console.log("current user is " + currentUser);
@@ -27,6 +27,7 @@ function Purchase() {
       email_id: currentUser,
     };
     //code to get product in
+    axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
 
     axios
       .post("/purchase/getPurchaseItems", userInfo)
@@ -50,7 +51,7 @@ function Purchase() {
     
   }, []);
   let redirectVar = null;
-  if (!cookie.load("cookie")) {
+  if (!localStorage.getItem('token')) {
     redirectVar = <Navigate to="/login" />;
   }
   const calculateOrderPrice = () => {
@@ -69,6 +70,7 @@ function Purchase() {
             name: item.name,
             price: item.price,
           };
+          axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
           axios.defaults.withCredentials = true;
               axios
                 .post("/purchase/makePurchase", cartItem)

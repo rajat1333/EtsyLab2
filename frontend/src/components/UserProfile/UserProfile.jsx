@@ -23,12 +23,14 @@ export default function UserProfile() {
   console.log("iiiiiiiiiiii " + image)
   const [downloadUrl, setDownloadUrl] = useState();
   const [tempImage, setTempImage] = useState();
-  let userEmailId = cookie.load("cookie");
+  // let userEmailId = cookie.load("cookie");
+  let userEmailId = localStorage.getItem('username');
 
   useEffect(() => {
     const userData = {
       emailId: userEmailId,
     };
+    axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
 
     axios.defaults.withCredentials = true;
     axios
@@ -57,7 +59,7 @@ export default function UserProfile() {
   }, []);
 
   let redirectVar = null;
-  if (!cookie.load("cookie")) {
+  if (!localStorage.getItem('token')) {
     redirectVar = <Navigate to="/login" />;
   }
   const handleCountryChange = (e) => {
@@ -111,6 +113,7 @@ export default function UserProfile() {
       country: country,
     };
     console.log(" user info is : " + JSON.stringify(userInfo));
+    axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
     axios.defaults.withCredentials = true;
     axios
       .post("/user/updateUser", userInfo)

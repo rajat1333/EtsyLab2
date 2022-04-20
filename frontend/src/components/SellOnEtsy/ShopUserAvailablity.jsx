@@ -10,11 +10,12 @@ function ShopUserAvailablity() {
   const navigate = useNavigate();
   const [shopName, setShopName] = useState("");
   let NavigateVar = null;
-  let userEmailId = cookie.load("cookie");
+  // let userEmailId = cookie.load("cookie");
+  let userEmailId = localStorage.getItem('username');
   console.log("cookie object is : " + JSON.stringify(userEmailId));
   // let redirectToShopPage = null;
 
-  if (!cookie.load("cookie")) {
+  if (!localStorage.getItem('token')) {
     NavigateVar = <Navigate to="/login" />;
   }
 
@@ -24,6 +25,8 @@ function ShopUserAvailablity() {
     };
     if (userEmailId != null) {
       axios.defaults.withCredentials = true;
+      axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
+
       axios.post("/shop/shopExists", userData).then((response) => {
         console.log("Status Code : ", response.status);
         let shopDetails = response.data;
@@ -47,6 +50,8 @@ function ShopUserAvailablity() {
 
     if (shopName != "") {
       axios.defaults.withCredentials = true;
+      axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
+
       axios.post("/shop/checkAvailability", data).then((response) => {
         console.log("Status Code : ", response.status);
         if (

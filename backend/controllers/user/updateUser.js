@@ -21,7 +21,7 @@ const updateUser = (req, res) => {
 
   Users.findOneAndUpdate( { _id : req.body.id } , user, {new: true} , (err, updatedUser)=>{
     console.log("inside find and update")
-    console.log("updatedUser " + updatedUser)
+    console.log("updatedUser " +  updatedUser)
     console.log("err " + err)
     if (err) {
       console.log("Error occoured while updating user is " + err);

@@ -6,6 +6,7 @@ import {  Navigate } from "react-router-dom";
 import * as constants from '../../config/constants'
 import { connect } from 'react-redux';
 import { login } from '../../js/actions/loginActionCreator';
+const jwt_decode = require('jwt-decode');
 
 //Define a Login Component
 class Login extends React.Component{
@@ -18,6 +19,7 @@ class Login extends React.Component{
             username : "",
             password : "",
             authFlag : false,
+            token: "",
             message : "",
             signUp : false,
             emailId : "",
@@ -89,13 +91,17 @@ class Login extends React.Component{
             axios.post('/login',data)
                 .then(response => {
                     console.log("Status Code : ",response.status);
-                    if(response.status === 200 && response.data === constants.SUCCESSFUL_LOGIN ){
-                        console.log("hello user");
-                        this.props.login()
-                        this.setState({
-                            authFlag : true
-                        })
-                    }
+                    this.setState({
+                        token: response.data,
+                        authFlag: true
+                    });
+                    // if(response.status === 200 && response.data === constants.SUCCESSFUL_LOGIN ){
+                    //     console.log("hello user");
+                    //     this.props.login()
+                    //     this.setState({
+                    //         authFlag : true
+                    //     })
+                    // }
                     if(response.status === 200 && response.data === constants.INVALID_CREDENTIALS){
                         alert("Please enter valid username and password!");
                         this.setState({
@@ -114,9 +120,19 @@ class Login extends React.Component{
     render(){
         //redirect based on successful login
         let redirectVar = null;
-        if(cookie.load('cookie')){
+        if (this.state.token.length > 0) {
+            localStorage.setItem("token", this.state.token);
+
+            var decoded = jwt_decode(this.state.token.split(' ')[1]);
+            localStorage.setItem("user_id", decoded._id);
+            localStorage.setItem("username", decoded.username);
+            
             redirectVar = <Navigate to= "/home"/>
         }
+
+        // if(cookie.load('cookie')){
+        //     redirectVar = <Navigate to= "/home"/>
+        // }
         return(
             <div>
                 {redirectVar}

@@ -75,6 +75,8 @@ function EditItem(props) {
       };
       //code to add user object
       axios.defaults.withCredentials = true;
+      axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
+
       axios
         .post("/shop/editItem", editedItem)
         .then((response) => {
