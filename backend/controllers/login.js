@@ -7,49 +7,90 @@ const { secret } = require('../config/config');
 const { auth } = require("../config/passport");
 auth();
 const Users = require('../Models/UserModel');
+var kafka = require('../kafka/client');
+
 
 const login = (req, res) =>{
-    let inputUser = {
-        email_id : req.body.emailId,
-        password : req.body.password
+  console.log("Inside Login Post Request");
+  console.log("Req Body : ",req.body);
+  msg={};
+  msg.body=req.body;
+  kafka.make_request('post_login',msg, function(err,mongoUser){
+    console.log('in result');
+    console.log(mongoUser);
+    if (err){
+        console.log("Inside err");
+        console.log("Error is : " + err);
     }
-    console.log("Inside Login Post Request");
-    console.log("Req Body : ",req.body);
-    console.log("inputUser : ",inputUser);
+    if (mongoUser) {
+      console.log("User from mongo is  " + JSON.stringify(mongoUser) );
 
-    Users.findOne({ email_id: req.body.emailId, password: req.body.password }, (error, mongoUser) => {
-        console.log("users find " + mongoUser );
-        console.log("Error is " + error);
-        if (error) {
-            console.log("Error is " + error);
+      const payload = { _id: mongoUser._id, username: mongoUser.email_id};
+      const token = jwt.sign(payload, secret, {
+          expiresIn: 1008000
+      });
+      res.status(200).end("JWT " + token);
+
+
+      // res.cookie('cookie', mongoUser.email_id ,{maxAge: 900000, httpOnly: false, path : '/'});
+      // req.session.user = mongoUser;
+      // res.writeHead(200,{
+      //     'Content-Type' : 'text/plain'
+      // })
+      // console.log("successful login");
+      // res.end(constants.SUCCESSFUL_LOGIN);
+    }
+    else {
+      res.writeHead(200, {
+          'Content-Type' : 'text/plain'
+      })
+      res.end(constants.INVALID_CREDENTIALS);
+      console.log("Invalid credentials");
+    }
+    
+});
+
+    // let inputUser = {
+    //     email_id : req.body.emailId,
+    //     password : req.body.password
+    // }
+    // console.log("Inside Login Post Request");
+    // console.log("Req Body : ",req.body);
+    // console.log("inputUser : ",inputUser);
+
+    // Users.findOne({ email_id: req.body.emailId, password: req.body.password }, (error, mongoUser) => {
+    //     console.log("users find " + mongoUser );
+    //     console.log("Error is " + error);
+    //     if (error) {
+    //         console.log("Error is " + error);
           
-      }
-      if (mongoUser) {
-        console.log("User from mongo is  " + JSON.stringify(mongoUser) );
+    //   }
+    //   if (mongoUser) {
+    //     console.log("User from mongo is  " + JSON.stringify(mongoUser) );
 
-        const payload = { _id: mongoUser._id, username: mongoUser.email_id};
-        const token = jwt.sign(payload, secret, {
-            expiresIn: 1008000
-        });
-        res.status(200).end("JWT " + token);
+    //     const payload = { _id: mongoUser._id, username: mongoUser.email_id};
+    //     const token = jwt.sign(payload, secret, {
+    //         expiresIn: 1008000
+    //     });
+    //     res.status(200).end("JWT " + token);
 
 
-        // res.cookie('cookie', mongoUser.email_id ,{maxAge: 900000, httpOnly: false, path : '/'});
-        // req.session.user = mongoUser;
-        // res.writeHead(200,{
-        //     'Content-Type' : 'text/plain'
-        // })
-        console.log("successful login");
-        res.end(constants.SUCCESSFUL_LOGIN);
-      }
-      else {
-        res.writeHead(200, {
-            'Content-Type' : 'text/plain'
-        })
-        res.end(constants.INVALID_CREDENTIALS);
-        console.log("Invalid credentials");
-      }
-    });
+    //     // res.cookie('cookie', mongoUser.email_id ,{maxAge: 900000, httpOnly: false, path : '/'});
+    //     // req.session.user = mongoUser;
+    //     // res.writeHead(200,{
+    //     //     'Content-Type' : 'text/plain'
+    //     // })
+    //     console.log("successful login");
+    //     res.end(constants.SUCCESSFUL_LOGIN);
+    //   }
+    //   else {
+    //     res.writeHead(200, {
+    //         'Content-Type' : 'text/plain'
+    //     })
+    //     res.end(constants.INVALID_CREDENTIALS);
+    //     console.log("Invalid credentials");
+    //   }
+    // });
 
       
 
