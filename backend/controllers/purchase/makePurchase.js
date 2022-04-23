@@ -15,6 +15,11 @@ const makePurchase = (req, res) => {
     email_id: req.body.email_id,
     name: req.body.name,
     price: req.body.price,
+    image: req.body.image,
+    shop_name: req.body.shop_name,
+    gift_wrapped: req.body.gift_wrapped,
+    message: req.body.message,
+    date: new Date().toLocaleString()
   });
 
   console.log("Inside makePurchase Post Request");

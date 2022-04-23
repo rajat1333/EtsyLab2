@@ -2,6 +2,7 @@ var connection =  new require('./kafka/Connection');
 //topics files
 //var signin = require('./services/signin.js');
 var Login = require('./services/Login.js');
+var getProducts = require('./services/getProducts.js');
 
 function handleTopicRequest(topic_name,fname){
     //var topic_name = 'root_topic';
@@ -56,3 +57,4 @@ mongoose.set('useFindAndModify', false);
 //first argument is topic name
 //second argument is a function that will handle this topic request
 handleTopicRequest("post_login",Login)
+handleTopicRequest("get_products",getProducts)

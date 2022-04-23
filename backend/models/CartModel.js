@@ -6,7 +6,11 @@ var cartsSchema = new Schema({
     quantity: {type: String, required: false},
     product_id: {type: String, required: false},
     name: {type: String, required: false},
-    price: {type: String, required: false}
+    price: {type: String, required: false},
+    shop_name: {type: String, required: false},
+    gift_wrapped: {type: String, required: false},
+    message: {type: String, required: false},
+    image: {type: String, required: false}
 },
 {
     versionKey: false

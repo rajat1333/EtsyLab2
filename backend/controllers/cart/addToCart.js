@@ -11,7 +11,11 @@ const addToCart = (req, res) => {
     quantity: req.body.quantity,
     product_id: req.body.product_id,
     name: req.body.name,
-    price: req.body.price
+    price: req.body.price,
+    image: req.body.image,
+    shop_name: req.body.shop_name,
+    gift_wrapped: req.body.gift_wrapped,
+    message: req.body.message,
   });
   
   console.log("product obj : " +  JSON.stringify(cartProduct))

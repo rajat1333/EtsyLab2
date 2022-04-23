@@ -3,6 +3,8 @@ var mysql = require("mysql");
 var session = require("express-session");
 var constants = require("../config/constants.json");
 const Products = require('../Models/ProductModel');
+var kafka = require('../kafka/client');
+
 
 
 const home = (req, res) => {
@@ -10,7 +12,11 @@ const home = (req, res) => {
   console.log("Inside Products");
   console.log("email is : " + email_id);
 
-  Products.find({}, (err, allProducts)=>{
+  msg={};
+  //msg.body=req.body;
+  kafka.make_request('get_products', msg, function(err,allProducts){
+    console.log('in result');
+    console.log(allProducts);
     if (err) {
       console.log(err);
       return;
@@ -22,6 +28,19 @@ const home = (req, res) => {
       res.end(JSON.stringify(allProducts));
     }
   });
+
+  // Products.find({}, (err, allProducts)=>{
+  //   if (err) {
+  //     console.log(err);
+  //     return;
+  //   }
+  //   if(allProducts){
+  //     res.writeHead(200, {
+  //       "Content-Type": "application/json",
+  //     });
+  //     res.end(JSON.stringify(allProducts));
+  //   }
+  // });
 
   // connPool.query("Select * from products WHERE NOT shop_name = " + mysql.escape(email_id), function (err, result) {
   // // connPool.query("Select * from products", function (err, result) {

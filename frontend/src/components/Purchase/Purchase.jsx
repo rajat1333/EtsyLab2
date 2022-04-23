@@ -14,12 +14,14 @@ import { Link, Navigate } from "react-router-dom";
 import EtsyNavigationBar from "../LandingPage/EtsyNavigationBar";
 import Footer from "../Footer/Footer";
 import * as constants from "../../config/constants";
+import ReactPaginate from "react-paginate";
 
 
 function Purchase() {
   let currentUser = localStorage.getItem('username');
   const [purchaseItems, setPurchaseItems] = useState();
   const [orderPrice, setOrderPrice] = useState(0);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
   console.log("current user is " + currentUser);
 
   useEffect(() => {
@@ -61,6 +63,113 @@ function Purchase() {
     });
     return tempOrderPrice;
   };
+  const itemPerPageChangeHandler = async (e) => {
+    setItemsPerPage(e.target.value);
+  };
+  function PaginatedItems({ itemsPerPage }) {
+    // We start with an empty list of items.
+    const [currentItems, setCurrentItems] = useState(null);
+    const [pageCount, setPageCount] = useState(0);
+    // Here we use item offsets; we could also use page offsets
+    // following the API or data you're working with.
+    const [itemOffset, setItemOffset] = useState(0);
+
+    useEffect(() => {
+      // Fetch items from another resources.
+      console.log(itemsPerPage);
+      console.log(itemOffset);
+      const endOffset = parseInt(itemOffset) + parseInt(itemsPerPage);
+      console.log(`Loading items from ${itemOffset} to ${endOffset}`);
+      setCurrentItems(purchaseItems.slice(itemOffset, endOffset));
+      setPageCount(Math.ceil(purchaseItems.length / itemsPerPage));
+    }, [itemOffset, itemsPerPage]);
+
+    // Invoke when user click to request another page.
+    const handlePageClick = (event) => {
+      console.log(event.selected);
+      const newOffset = (event.selected * itemsPerPage) % purchaseItems.length;
+      console.log(
+        `User requested page number ${event.selected}, which is offset ${newOffset}`
+      );
+      setItemOffset(newOffset);
+    };
+
+    return (
+      <div>
+        {/* <Orders currentOrders={currentItems} /> */}
+        <div>
+        {currentItems!=null && 
+        currentItems.map((order) => (
+          <ListGroup.Item key={order.id}>
+            <Row className="align-items-center">
+              <Col md={2}>
+                <img
+                  src={order.image}
+                  alt={order.name}
+                  className="img-fluid rounded img-thumbnail"
+                  style={{ width: "70px", height: "70px" }}
+                ></img>{" "}
+                {/* <span>{order.name}</span>{" "} */}
+              </Col>
+              <Col md={2}>
+                <span>{order.name}</span>{" "}
+              </Col>
+              <Col md={2}>
+                <span>{order.shop_name}</span>{" "}
+              </Col>
+              <Col md={1}>
+                <span>{order.quantity}</span>{" "}
+              </Col>
+              <Col md={1}>
+                <span>
+                  {order.currency} {order.price}
+                </span>{" "}
+              </Col>
+              <Col md={2}>
+              {parseFloat(order.price * order.quantity).toFixed(2)}
+              </Col>
+              <Col md={2}>
+              {order.date}
+              </Col>
+            </Row>
+            <Row>
+              <Col md={8}>
+                <div
+                  class={
+                    order.gift_wrapped === "true" ? "visible" : "invisible"
+                  }
+                >
+                  <span>Order is gift wrapped : {order.message}</span>
+                </div>
+              </Col>
+            </Row>
+          </ListGroup.Item>
+        ))}
+        
+      </div>
+        &nbsp;
+        <ReactPaginate
+          nextLabel="next >"
+          onPageChange={handlePageClick}
+          pageRangeDisplayed={5}
+          pageCount={pageCount}
+          previousLabel="< previous"
+          pageClassName="page-item"
+          pageLinkClassName="page-link"
+          previousClassName="page-item"
+          previousLinkClassName="page-link"
+          nextClassName="page-item"
+          nextLinkClassName="page-link"
+          breakLabel="..."
+          breakClassName="page-item"
+          breakLinkClassName="page-link"
+          containerClassName="pagination"
+          activeClassName="active"
+          renderOnZeroPageCount={null}
+        />
+      </div>
+    );
+  }
   const handlePlaceOrder = ()=>{
     purchaseItems.map((item) => {
         const cartItem = {
@@ -93,6 +202,14 @@ function Purchase() {
       <title>Purshase Page</title>
 
       <h1>Purshase Page</h1>
+      <Col md={10} className="text-end">
+          Orders Per Page{" "}
+          <select value={itemsPerPage} onChange={itemPerPageChangeHandler}>
+            <option value="2">2</option>
+            <option value="5">5</option>
+            <option value="10">10</option>
+          </select>
+        </Col>
       <br />
       <br />
       {purchaseItems == null && (
@@ -107,31 +224,47 @@ function Purchase() {
       {purchaseItems != null && (
         <div>
           <Row>
-            <Col md={8}>
+            <Col md={12}>
               <ListGroup>
                 <ListGroupItem>
                   <Row>
                     <Col md={2}>
+                      <h5>Image</h5>
+                    </Col>
+                    <Col md={2}>
                       <h5>Item</h5>
                     </Col>
                     <Col md={2}>
+                      <h5>Shop Name</h5>
+                    </Col>
+                    <Col md={1}>
                       <h5>Quantity</h5>
                     </Col>
-                    <Col md={2}>
+                    <Col md={1}>
                       <h5>Price</h5>
                     </Col>
                     <Col md={2}>
                       <h5>Total Price</h5>
                     </Col>
-                    <Col md={3}>
-                      <h5>Date of order</h5>
+                    <Col md={2}>
+                      <h5>Date</h5>
                     </Col>
                   </Row>
                 </ListGroupItem>
 
-                {purchaseItems.map((item) => (
+                {/* {purchaseItems.map((item) => (
                   <ListGroup.Item key={item.prodcut_id}>
                     <Row className="align-items-center">
+                      <Col md={2}>
+                        <span>
+                          <img
+                            src={item.image}
+                            alt="avatar"
+                            width="80"
+                            height="80"
+                          />
+                        </span>{" "}
+                      </Col>
                       <Col md={2}>
                         <span>{item.name}</span>{" "}
                       </Col>
@@ -140,43 +273,17 @@ function Purchase() {
                       </Col>
                       <Col md={2}>{item.price}</Col>
                       <Col md={2}>
-                        {/* {setOrderPrice(orderPrice + item.price * item.quantity)} */}
                         {parseFloat(item.price * item.quantity).toFixed(2)}
                       </Col>
-                      <Col md={3}>{item.date}</Col>
+                      <Col md={2}>{item.date}</Col>
                     </Row>
                   </ListGroup.Item>
-                ))}
-                {/* {cartItems.map((item) => (
-            <ListGroup.Item key={item.prodcut_id}>
-              <Row className="align-items-center">
-              <Col md={2}>
-                  <span>{item.name}</span>{" "}
-                </Col>
-                <Col md={2}>
-                  <span>{item.quantity}</span>{" "}
-                </Col>
-                <Col md={2}>
-                   {item.price}
-                </Col>
-                <Col md={2}>
-                  
-                  {parseFloat(item.price * item.quantity).toFixed(2)}
-                </Col>
-              </Row>
-            </ListGroup.Item>
-          ))} */}
+                ))} */}
               </ListGroup>
             </Col>
+            <PaginatedItems itemsPerPage={itemsPerPage} />
           </Row>
           <br />
-          {/* <button
-            className="btn btn-primary"
-            type="button"
-              onClick={handlePlaceOrder}
-          >
-            Place order for total Amount : {orderPrice}
-          </button> */}
         </div>
       )}
 

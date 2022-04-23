@@ -52,6 +52,8 @@ function ProductPage() {
         product_id: product._id,
         name: product.name,
         price: product.price,
+        image: product.image,
+        shop_name: product.shop_name
       };
       axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
       axios.defaults.withCredentials = true;
