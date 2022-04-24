@@ -9,7 +9,7 @@ import { storage_bucket } from "../../config/firebaseConfig";
 import Product from "../Home/Product";
 
 export default function Favourites() {
-  const [name, setName] = useState();
+  const [name, setName] = useState(localStorage.getItem('username'));
   const [products, setProducts] = useState([{"id":7,"name":"Personalized Name Necklace with Birth Flower","price":"16","quantity":16,"shop_name":"user1shop","description":"925 sterling Silver, Rose Gold Flower Name Necklace, Gold Flower Name Necklace, Gift for Her","image":"https://firebasestorage.googleapis.com/v0/b/etsy-65478.appspot.com/o/Screenshot%202022-03-20%20133554.jpg?alt=media&token=2369cad9-d5da-4cba-905c-aa22ca4f0eb8","category":"Jewellery"}]);
   const [image, setImage] = useState(
     "https://bootdey.com/img/Content/avatar/avatar7.png"
@@ -37,6 +37,30 @@ export default function Favourites() {
           if (userObject.image != null) setImage(userObject.image);
         }
       });
+
+
+      const userInfo = {
+        email_id: userEmailId,
+      };
+      //code to get product in
+      axios.defaults.headers.common["authorization"] =
+        localStorage.getItem("token");
+  
+      axios.post("/favourites/getFavouriteItems", userInfo).then((response) => {
+        //update the state with the response data
+        console.log(
+          "Getting data from backend : " + JSON.stringify(response.data)
+        );
+        let productArray = response.data;
+        console.log("fav product array is : " + JSON.stringify(productArray));
+        if(productArray){
+          setProducts(productArray);
+        }
+  
+      });
+
+
+
   }, []);
 
   let redirectVar = null;

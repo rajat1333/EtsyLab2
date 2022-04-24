@@ -2,8 +2,14 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 var favouritesSchema = new Schema({
-    product_id: {type: String, required: false},
-    customer_email_id: {type: String, required: false}
+    email_id: {type: String, required: false},
+    name: {type: String, required: false},
+    price: {type: String, required: false},
+    quantity: {type: String, required: false},
+    shop_name: {type: String, required: false},
+    description: {type: String, required: false},
+    image: {type: String, required: false},
+    category: {type: String, required: false},
 },
 {
     versionKey: false

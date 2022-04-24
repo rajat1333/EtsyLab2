@@ -1,0 +1,28 @@
+const connPool = require("../../db/mysql");
+var mysql = require('mysql');
+const Cart = require('../../Models/CartModel');
+const Favourite = require('../../Models/FavouriteModel');
+
+
+
+const getFavouriteItems = (req, res) =>{
+    let email_id = req.body.email_id;
+    console.log("Inside getFavouriteItems");
+    console.log("email_id is : " + email_id);
+
+    Favourite.find({ email_id : req.body.email_id}, (err, favProducts)=>{
+      if (err) {
+        console.log(err);
+        return;
+      }
+      if(favProducts){
+        res.writeHead(200, {
+          "Content-Type": "application/json",
+        });
+        console.log("favProducts items is : " + JSON.stringify(favProducts))
+        res.end(JSON.stringify(favProducts));
+      }
+    });
+
+}
+module.exports = getFavouriteItems;
