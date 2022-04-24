@@ -1,6 +1,6 @@
 const connPool = require("../../db/mysql");
 var mysql = require('mysql');
-const Products = require('../../Models/ProductModel');
+const Products = require('../../models/ProductModel');
 
 
 const getProduct = (req, res) =>{

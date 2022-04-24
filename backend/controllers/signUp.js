@@ -2,7 +2,7 @@ const connPool = require("../db/mysql");
 var mysql = require("mysql");
 var session = require("express-session");
 var constants = require("../config/constants.json");
-const Users = require("../Models/UserModel");
+const Users = require("../models/UserModel");
 
 const signUp = (req, res) => {
   let inputUser = new Users({

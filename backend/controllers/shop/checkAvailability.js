@@ -1,7 +1,7 @@
 const connPool = require("../../db/mysql");
 var mysql = require("mysql");
 var constants = require("../../config/constants.json");
-const Shops = require('../../Models/ShopModel');
+const Shops = require('../../models/ShopModel');
 
 const checkAvailability = (req, res) => {
   let shopName = req.body.shopName;

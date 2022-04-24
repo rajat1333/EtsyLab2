@@ -1,7 +1,7 @@
 const connPool = require("../../db/mysql");
 var mysql = require("mysql");
 var constants = require("../../config/constants.json");
-const Products = require('../../Models/ProductModel');
+const Products = require('../../models/ProductModel');
 
 
 const editItem = (req, res) => {

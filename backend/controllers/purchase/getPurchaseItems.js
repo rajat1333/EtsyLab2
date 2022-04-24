@@ -1,6 +1,6 @@
 const connPool = require("../../db/mysql");
 var mysql = require('mysql');
-const Purchase = require('../../Models/PurchaseModel');
+const Purchase = require('../../models/PurchaseModel');
 
 
 const getPurchaseItems = (req, res) =>{

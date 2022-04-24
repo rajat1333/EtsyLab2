@@ -1,9 +1,9 @@
 const connPool = require("../../db/mysql");
 var mysql = require("mysql");
 var constants = require("../../config/constants.json");
-const Purchase = require('../../Models/PurchaseModel');
-const Products = require('../../Models/ProductModel');
-const Cart = require('../../Models/CartModel');
+const Purchase = require('../../models/PurchaseModel');
+const Products = require('../../models/ProductModel');
+const Cart = require('../../models/CartModel');
 var kafka = require('../../kafka/client');
 
 

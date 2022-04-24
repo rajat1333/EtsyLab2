@@ -1,6 +1,6 @@
 const connPool = require("../../db/mysql");
 var mysql = require('mysql');
-const Cart = require('../../Models/CartModel');
+const Cart = require('../../models/CartModel');
 
 
 const getCartItems = (req, res) =>{
