@@ -97,7 +97,7 @@ function EtsyNavigationBar(props) {
               <Nav.Link href="/cart">Cart</Nav.Link>
               <Nav.Link href="/purchase">My Purchases</Nav.Link>
               <Nav.Link href="/shopUserAvailablity">Sell on Etsy</Nav.Link>
-              <NavDropdown title="Dropdown" id="basic-nav-dropdown">
+              {/* <NavDropdown title="Dropdown" id="basic-nav-dropdown">
                 <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
                 <NavDropdown.Item href="#action/3.2">
                   Another action
@@ -109,7 +109,7 @@ function EtsyNavigationBar(props) {
                 <NavDropdown.Item href="#action/3.4">
                   Separated link
                 </NavDropdown.Item>
-              </NavDropdown>
+              </NavDropdown> */}
             </Nav>
           </Navbar.Collapse>
           {navLogin}

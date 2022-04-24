@@ -181,7 +181,13 @@ function Cart() {
                                   console.log("index to update is " + index);
                                   //cartItems[index] = item;
                                   let t = cartItems;
+                                  
                                   t[index] = item;
+                                  if(parseInt(item.quantity)==0){
+                                    if (index > -1) {
+                                      t.splice(index, 1); // 2nd parameter means remove one item only
+                                    }
+                                  }
                                   setCartItems(t);
                                   calculateOrderPrice();
                                   forceUpdate();
@@ -235,7 +241,7 @@ function Cart() {
                         </span>
                         {/* <span>{item.quantity}</span>{" "} */}
                       </Col>
-                      <Col md={2}>{item.price}</Col>
+                      <Col md={2}>{item.price} $</Col>
                       <Col md={2}>
                         {/* {setOrderPrice(orderPrice + item.price * item.quantity)} */}
                         {parseFloat(item.price * item.quantity).toFixed(2)}
@@ -329,7 +335,7 @@ function Cart() {
             type="button"
             onClick={handlePlaceOrder}
           >
-            Place order for total Amount : {orderPrice}
+            Place order for total Amount : {parseFloat(orderPrice).toFixed(2)} $
           </button>
         </div>
       )}
