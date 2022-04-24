@@ -3,6 +3,8 @@ var connection =  new require('./kafka/Connection');
 //var signin = require('./services/signin.js');
 var Login = require('./services/Login.js');
 var getProducts = require('./services/getProducts.js');
+var addTofavourites = require('./services/addTofavourites.js');
+var makePurchase = require('./services/makePurchase.js');
 
 function handleTopicRequest(topic_name,fname){
     //var topic_name = 'root_topic';
@@ -58,3 +60,6 @@ mongoose.set('useFindAndModify', false);
 //second argument is a function that will handle this topic request
 handleTopicRequest("post_login",Login)
 handleTopicRequest("get_products",getProducts)
+// handleTopicRequest("post_search",search)
+handleTopicRequest("post_addTofavourites",addTofavourites)
+handleTopicRequest("post_makePurchase",makePurchase)

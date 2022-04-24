@@ -7,6 +7,10 @@ var purchasesSchema = new Schema({
     product_id: {type: String, required: false},
     name: {type: String, required: false},
     price: {type: String, required: false},
+    image: {type: String, required: false},
+    shop_name: {type: String, required: false},
+    gift_wrapped: {type: String, required: false},
+    message: {type: String, required: false},
     date: {type: String, required: false}   //todo add auto generated date
 },
 {

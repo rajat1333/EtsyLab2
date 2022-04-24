@@ -3,32 +3,53 @@ var mysql = require("mysql");
 var constants = require("../../config/constants.json");
 const Products = require('../../Models/ProductModel');
 const Favourite = require('../../Models/FavouriteModel');
+var kafka = require('../../kafka/client');
+
 
 const addTofavourites = (req, res) => {
-    let newFavourite = new Favourite({
-        email_id: req.body.email_id,
-        name: req.body.name,
-        description: req.body.description,
-        price: req.body.price,
-        shop_name: req.body.shop_name,
-        category: req.body.category,
-        quantity: req.body.quantity,
-        image: req.body.image,
-      });
+
+    
   console.log("Inside addTofavourites Post Request");
   console.log("Req Body : ", req.body);
-
-  newFavourite.save((err, productItem)=>{
-    if(err){
-      console.log("error while adding new item is : " + err);
+  msg={};
+  msg.body=req.body;
+  kafka.make_request('post_addTofavourites',msg, function(err,productItem){
+    console.log('in result');
+    console.log(productItem);
+    if (err){
+        console.log("Inside err");
+        console.log("error while adding new item is : " + err);
     }
-    if(productItem){
+    if (productItem) {
+      console.log("User from mongo is  " + JSON.stringify(productItem) );
       res.writeHead(200, {
         "Content-Type": "text/plain",
       });
       res.end(constants.ITEM_ADDED_SUCCESSFULLY);
     }
-  })
+});
+
+//   let newFavourite = new Favourite({
+//     email_id: req.body.email_id,
+//     name: req.body.name,
+//     description: req.body.description,
+//     price: req.body.price,
+//     shop_name: req.body.shop_name,
+//     category: req.body.category,
+//     quantity: req.body.quantity,
+//     image: req.body.image,
+//   });
+//   newFavourite.save((err, productItem)=>{
+//     if(err){
+//       console.log("error while adding new item is : " + err);
+//     }
+//     if(productItem){
+//       res.writeHead(200, {
+//         "Content-Type": "text/plain",
+//       });
+//       res.end(constants.ITEM_ADDED_SUCCESSFULLY);
+//     }
+//   })
   // var sql =
   //   "INSERT INTO products (`name`, `description`, `price`, `shop_name`, `category`, `quantity`, `image`) VALUES (" +
   //   mysql.escape(newItem.name) +

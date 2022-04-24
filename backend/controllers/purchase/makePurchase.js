@@ -4,78 +4,100 @@ var constants = require("../../config/constants.json");
 const Purchase = require('../../Models/PurchaseModel');
 const Products = require('../../Models/ProductModel');
 const Cart = require('../../Models/CartModel');
+var kafka = require('../../kafka/client');
+
 
 
 
 const makePurchase = (req, res) => {
-  let initialQuantity = 0;
-  let purchaseItem = new Purchase({
-    product_id: req.body.product_id,
-    quantity: req.body.quantity,
-    email_id: req.body.email_id,
-    name: req.body.name,
-    price: req.body.price,
-    image: req.body.image,
-    shop_name: req.body.shop_name,
-    gift_wrapped: req.body.gift_wrapped,
-    message: req.body.message,
-    date: new Date().toLocaleString()
-  });
-
   console.log("Inside makePurchase Post Request");
   console.log("Req Body : ", req.body);
+  msg={};
+  msg.body=req.body;
 
-  //code for initial quantity
-
-  Products.find({ _id : req.body.product_id }, (err, product)=>{
-    if(err){
-      console.log(err)
+  kafka.make_request('post_makePurchase',msg, function(err,updatedProduct){
+    console.log('in result');
+    console.log(updatedProduct);
+    if (err){
+        console.log("Inside err");
+        console.log("error while adding new item is : " + err);
     }
-    if(product){
-      console.log("result is : " + JSON.stringify(product));
-      let p = product[0];
-      initialQuantity = p.quantity;
-      console.log("initial quntity is : " + initialQuantity);
-
-      //add entry to purchase table
-      purchaseItem.save((err, mongoPurchaseItem )=>{
-        if(err){
-          console.log(err)
-        }
-        if(mongoPurchaseItem){
-          console.log(
-            "purshase obj added to Mongo is : " + JSON.stringify(mongoPurchaseItem)
-          );
-        }
-        //delete entry from cart table
-        Cart.deleteMany({email_id : req.body.email_id}, (err)=>{
-          if (err) {
-            console.log(err);
-          }else{
-            console.log(
-                "Mongo delete executed  "
-              );
-          }
-        } );
-
-        Products.findOneAndUpdate( { _id : req.body.product_id} , { quantity : initialQuantity - purchaseItem.quantity }, {new: true} , (err, updatedProduct)=>{
-          if (err) {
-            console.log(err);
-          } 
-          if(updatedProduct){
-            console.log("updateQuerry executed and result is : " + JSON.stringify(updatedProduct));
+    if (updatedProduct) {
+      console.log("updateQuerry executed and result is : " + JSON.stringify(updatedProduct));
             res.writeHead(200, {
               "Content-Type": "text/plain",
             });
             res.end(constants.ITEM_EDITED_SUCCESSFULLY);
-          }
-        });
-
-
-      })
     }
+});
+
+
+
+  // let initialQuantity = 0;
+  // let purchaseItem = new Purchase({
+  //   product_id: req.body.product_id,
+  //   quantity: req.body.quantity,
+  //   email_id: req.body.email_id,
+  //   name: req.body.name,
+  //   price: req.body.price,
+  //   image: req.body.image,
+  //   shop_name: req.body.shop_name,
+  //   gift_wrapped: req.body.gift_wrapped,
+  //   message: req.body.message,
+  //   date: new Date().toLocaleString()
+  // });
+
+  // //code for initial quantity
+
+  // Products.find({ _id : req.body.product_id }, (err, product)=>{
+  //   if(err){
+  //     console.log(err)
+  //   }
+  //   if(product){
+  //     console.log("result is : " + JSON.stringify(product));
+  //     let p = product[0];
+  //     initialQuantity = p.quantity;
+  //     console.log("initial quntity is : " + initialQuantity);
+
+  //     //add entry to purchase table
+  //     purchaseItem.save((err, mongoPurchaseItem )=>{
+  //       if(err){
+  //         console.log(err)
+  //       }
+  //       if(mongoPurchaseItem){
+  //         console.log(
+  //           "purshase obj added to Mongo is : " + JSON.stringify(mongoPurchaseItem)
+  //         );
+  //       }
+  //       //delete entry from cart table
+  //       Cart.deleteMany({email_id : req.body.email_id}, (err)=>{
+  //         if (err) {
+  //           console.log(err);
+  //         }else{
+  //           console.log(
+  //               "Mongo delete executed  "
+  //             );
+  //         }
+  //       } );
+
+  //       Products.findOneAndUpdate( { _id : req.body.product_id} , { quantity : initialQuantity - purchaseItem.quantity }, {new: true} , (err, updatedProduct)=>{
+  //         if (err) {
+  //           console.log(err);
+  //         } 
+  //         if(updatedProduct){
+  //           console.log("updateQuerry executed and result is : " + JSON.stringify(updatedProduct));
+  //           res.writeHead(200, {
+  //             "Content-Type": "text/plain",
+  //           });
+  //           res.end(constants.ITEM_EDITED_SUCCESSFULLY);
+  //         }
+  //       });
+
+
+  //     })
+  //   }
     
-  });
+  // });
 
 
 
